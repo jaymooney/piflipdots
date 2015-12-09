@@ -33,32 +33,56 @@ function buildFlippyDottys(address, meh) {
   return fun;
 }
 
-var all_dark_01 = buildSolid(1, false);
+function buildInstruction(address, stuff) {
+ return [0x80, 0x83, address].concat(stuff, 0x8f);
+}
+
+var all_dark_01 = buildSolid(0, false);
 var all_dark_02 = buildSolid(2, false);
-var all_bright_01 = buildSolid(1, true);
+var all_bright_01 = buildSolid(0, true);
 var all_bright_02 = buildSolid(2, true);
 
-var funpattern1 = buildFlippyDottys(1, false);
-var funpattern1a = buildFlippyDottys(1, true);
+var funpattern1 = buildFlippyDottys(0, false);
+var funpattern1a = buildFlippyDottys(0, true);
 var funpattern2 = buildFlippyDottys(2, true);
 var funpattern2a = buildFlippyDottys(2, false);
 
-
-
+var testpattern1 = buildInstruction(0, [0, 56, 8, 120, 8, 8, 56, 0, 64, 32, 0, 0, 32, 64, 0, 0, 96, 0, 0, 32, 0, 0, 0, 32, 120, 32, 32, 0]);
+var testpattern2 = buildInstruction(2, [0, 0, 4, 7, 4, 4, 0, 0, 3, 5, 5, 5, 5, 0, 0, 0, 4, 5, 5, 5, 2, 0, 0, 0, 7, 4, 4, 4]);
 
 var serialPort = new SerialPort("/dev/ttyAMA0", {
   baudrate: 57600
 });
 
 serialPort.on("open", function () {
-  console.log('open');
-  console.log(all_dark_01);
+  console.log("open");
 
-  serialPort.write(all_bright_01, function(err, results) {
+  var all = testpattern1.concat(testpattern2);
+//  all = all_bright_02;
+  serialPort.write(all, function(err, results) {
+if (err) {
 	console.log("error writing.");
 	console.log(err);
+} else {
 	console.log(results);
-	serialPort.close();
+	serialPort.drain(function(e, r) {
+if (err) {
+	console.log("error draining.");
+	console.log(err);
+}
+	console.log(results);
+
+
+	serialPort.close(function(err) {
+		if (err) {
+			console.log("error closing port");
+			console.log(err);
+		} else {
+			console.log("done and done.");
+		}
+	});
+
+	});
+}
   });
-//  serialPort.write(all_bright_02);
 });
