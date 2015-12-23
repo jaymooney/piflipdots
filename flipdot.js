@@ -1,6 +1,5 @@
 "use strict";
 
-
 var dotsy = 7;
 var dotsx = 28;
 var allon = 0b1111111;
@@ -52,17 +51,13 @@ FlipdotController.prototype.writeDots = function(outputArray) {
 	}
 };
 
-
-var signrows = 2 * 2;
-var signcolumns = 1;
-
-function FlipdotManager(startAddress) {
-	this.totalsigns = signrows * signcolumns;
+function FlipdotManager(numRows, numCols, startAddress) {
+	this.totalsigns = numRows * numCols;
 	this.controllers = [];
-	for (var i = 0; i < signcolumns; i++) {
+	for (var i = 0; i < numCols; i++) {
 		this.controllers[i] = [];
-		for (var j = 0; j < signrows; j++) {
-			this.controllers[i][j] = new FlipdotController(startAddress + j + i * signrows);
+		for (var j = 0; j < numRows; j++) {
+			this.controllers[i][j] = new FlipdotController(startAddress + j + i * numRows);
 		}
 	}
 }
@@ -79,8 +74,20 @@ FlipdotManager.prototype.setPixel = function(on, x, y) {
 	fd.setPixel(on, x % dotsx, y % dotsy);
 };
 
+FlipdotManager.prototype.copyFromCanvas = function(ctx) {}
+	var imageData = ctx.getImageData(0, 0, width, height);
+	var pixel = 0;
+	for (var x = 0; x < imageData.width; x++) {
+		for (var y = 0; y < imageData.height; y++) {
+			var val = blackOrWhitify(imageData.data, pixel)
+			fpm.setPixel(val, x, y);
+			pixel += 4;
+		}
+	}
+};
+
 FlipdotManager.prototype.buildInstruction = function() {
-	var instruction = [];//new Array(totalsigns * 32);
+	var instruction = [];//new Array(this.totalsigns * 32);
 	for (var i = 0; i < this.controllers.length; i++) {
 		var c = this.controllers[i];
 		for (var j = 0; j < c.length; j++) {

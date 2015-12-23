@@ -1,17 +1,17 @@
 "use strict";
 
 /**
- * characters are 5x7, usually the first and last row is blank for spacing
+ * characters are usually 5x5 with a blank row above and below for spacing
  */
 
-var charWidth = 5;
 var charHeight = 7; 
 var blank = [0,0,0,0,0];
 
 function createBitmap(pixelArray) {
 	var hasFirstRow = pixelArray.length === charHeight;
 	var hasLastRow = pixelArray.length > charHeight - 2;
-	var ret = new Uint8ClampedArray(charWidth);
+	var charWidth = pixelArray[0].length;
+	var ret = new Uint8Array(charWidth);
 	var offset = hasFirstRow ? 0 : 1;
 	var column = 0;
 
