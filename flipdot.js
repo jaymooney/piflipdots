@@ -63,7 +63,7 @@ function FlipdotManager(startAddress) {
 	for (var i = 0; i < signcolumns; i++) {
 		this.controllers[i] = [];
 		for (var j = 0; j < signrows; j++) {
-			this.controllers[i][j] = new FlipdotController(startAdress + i + j * signrows);
+			this.controllers[i][j] = new FlipdotController(startAddress + i + j * signrows);
 		}
 	}
 }
@@ -85,10 +85,10 @@ FlipdotManager.prototype.buildInstruction = function() {
 	for (var i = 0; i < this.controllers.length; i++) {
 		var c = this.controllers[i];
 		for (var j = 0; j < c.length; j++) {
-			c[j].buildInstruction(instruction);
+			c[j].writeDots(instruction);
 		}
 	}
-	if (!instruction.isEmpty()) {
+	if (instruction.length) {
 		return instruction;
 	}
 };
