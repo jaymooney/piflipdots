@@ -363,11 +363,18 @@ var alphabet = module.exports.alphabet = {
 		 " 0   "
 	]),
 	"!": createBitmap([
-		 " 0   ",
-		 " 0   ",
-		 " 0   ",
+		 "  0  ",
+		 "  0  ",
+		 "  0  ",
 		 "     ",
-		 " 0   "
+		 "  0  "
+	]),
+	"?": createBitmap([
+		 " 00  ",
+		 "   0 ",
+		 "  0  ",
+		 "     ",
+		 "  0  "
 	]),
 	"(": createBitmap([
 		 "   0 ",
