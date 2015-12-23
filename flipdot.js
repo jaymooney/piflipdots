@@ -54,7 +54,12 @@ FlipdotController.prototype.writeDots = function(outputArray) {
 };
 
 function blackOrWhitify(imageData, pixelOffset) {
-	var luminance = imageData[i] * 0.21 + imageData[i + 1] * 0.72 + imageData[i + 2] * 0.07;
+	var luminance = imageData[pixelOffset] * 0.21 + imageData[pixelOffset + 1] * 0.72 + imageData[pixelOffset + 2] * 0.07;
+	return luminance > 127;
+}
+
+function blackOrWhitify2(imageData, pixelOffset) {
+	var luminance = (imageData[pixelOffset] + imageData[pixelOffset + 1] + imageData[pixelOffset + 2]) / 3;
 	return luminance > 127;
 }
 
@@ -70,7 +75,7 @@ function FlipdotManager(numRows, numCols, startAddress) {
 		}
 	}
 	this.canvas = new Canvas(this.width, this.height);
-	var ctx = canvas.getContext("2d");
+	var ctx = this.canvas.getContext("2d");
 	ctx.antialias = "none";
 	ctx.imageSmoothingEnabled = false;
 	ctx.fillStyle = "#000";
@@ -87,10 +92,14 @@ function FlipdotManager(numRows, numCols, startAddress) {
 // 	ctx.fillText(text, x, y);
 // };
 
-FlipdotManager.prototype.drawCanvasImage = function(imageData) {
+FlipdotManager.prototype.drawCanvasImage = function(imageData, sizeToFit) {
 	var img = new Canvas.Image;
-	img.src = data;
-	ctx.drawImage(img, 0, 0, this.width, this.height);
+	img.src = imageData;
+	if (sizeToFit) {
+		this.ctx.drawImage(img, 0, 0, this.width, this.height);
+	} else {
+		this.ctx.drawImage(img, 0, 0);
+	}
 };
 
 FlipdotManager.prototype.getControllerByPixel = function(x, y) {
@@ -122,8 +131,8 @@ FlipdotManager.prototype.copyFromCanvas = function() {
 	var pixel = 0;
 	for (var x = 0; x < imageData.width; x++) {
 		for (var y = 0; y < imageData.height; y++) {
-			var val = blackOrWhitify(imageData.data, pixel)
-			fpm.setPixel(val, x, y);
+			var val = blackOrWhitify2(imageData.data, pixel)
+			this.setPixel(val, x, y);
 			pixel += 4;
 		}
 	}
