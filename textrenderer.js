@@ -1,17 +1,17 @@
 "use strict";
 
 /**
- * characters are usually 5x5 with a blank row above and below for spacing
+ * characters are 5x7, usually the first and last row is blank for spacing
  */
 
-var charHeight = 7; 
+var charWidth = module.exports.charWidth = 5;
+var charHeight = module.exports.charHeight = 7; 
 var blank = [0,0,0,0,0];
 
 function createBitmap(pixelArray) {
 	var hasFirstRow = pixelArray.length === charHeight;
 	var hasLastRow = pixelArray.length > charHeight - 2;
-	var charWidth = pixelArray[0].length;
-	var ret = new Uint8Array(charWidth);
+	var ret = new Uint8ClampedArray(charWidth);
 	var offset = hasFirstRow ? 0 : 1;
 	var column = 0;
 
@@ -34,7 +34,7 @@ function createBitmap(pixelArray) {
 }
 
 module.exports.makeSentence = function makeSentence(str) {
-	var sentence = [];
+	var sentence = [0];
 	var upper = str.toUpperCase();
 	for (let ch of upper) {
 		var bitmap = alphabet[ch];
@@ -42,7 +42,7 @@ module.exports.makeSentence = function makeSentence(str) {
 			bitmap = blank;
 		}
 		Array.prototype.push.apply(sentence, bitmap);
-		sentence.push(0);
+		sentence.push(0, 0, 0, 0, 0);
 	}
 	return sentence;
 }

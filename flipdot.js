@@ -1,6 +1,7 @@
 "use strict";
 
 var Canvas = require("canvas");
+var TextRenderer = require("./textrenderer");
 
 var dotsy = 7;
 var dotsx = 28;
@@ -21,6 +22,11 @@ FlipdotController.prototype.clear = function(toWhite) {
 FlipdotController.prototype.setDots = function(dots) {
 	this.isDirty = true;
 	this.dots = dots;
+};
+
+FlipdotController.prototype.setColumn = function(index, val) {
+	this.isDirty = true;
+	this.dots[index] = val;
 };
 
 // memoizing the bitmasks to set a specific pixel
@@ -83,14 +89,26 @@ function FlipdotManager(numRows, numCols, startAddress) {
 	this.ctx = ctx;
 }
 
-// FlipdotManager.prototype.drawCanvasText = function(text, x, y) {
-// 	var ctx = this.ctx;
-// 	ctx.fillStyle = "#fff";
-// 	ctx.font = "14px OPTICaslonBold-Cond";
-// 	ctx.textAlign = "center";
-// 	ctx.textBaseline = "middle";
-// 	ctx.fillText(text, x, y);
-// };
+FlipdotManager.prototype.drawNativeText = function(text, row) {
+	var data = TextRenderer.makeSentence(text);
+	for (var i = 0; i < data.length; i++) {
+		if (i > this.width) {
+			// no wrapping. yet.
+			break;
+		}
+		var col = Math.floor(i / dotsx);
+		this.controllers[col][row].setColumn(i % dotsx), data[i]);
+	};
+};
+
+FlipdotManager.prototype.drawCanvasText = function(text, x, y) {
+	var ctx = this.ctx;
+	ctx.fillStyle = "#fff";
+	ctx.font = "14px OPTICaslonBold-Cond";
+	ctx.textAlign = "left";
+	ctx.textBaseline = "hanging";
+	ctx.fillText(text, x, y);
+};
 
 FlipdotManager.prototype.drawCanvasImage = function(imageData, sizeToFit) {
 	var img = new Canvas.Image;

@@ -12,6 +12,10 @@ var serialPort = new SerialPort("/dev/ttyAMA0", {
 
 serialPort.on("open", function () {
 	console.log("serial port open");
+	drawText();
+});
+
+function drawImage() {
 	fs.readFile("./dandelionfull.jpg", function(err, img) {
 		if (err) throw err;
 		fdm.drawCanvasImage(img);
@@ -27,4 +31,21 @@ serialPort.on("open", function () {
 		}, 1000);
 
 	});
-});
+}
+
+function drawText() {
+	if (err) throw err;
+	fdm.drawCanvasText("DANDELION", 0, 0);
+	fdm.drawCanvasText("CHOCOLATE", 0, 14);
+	fdm.copyFromCanvas();
+	var instruction = fdm.buildInstruction();
+	if (instruction) {
+		serialPort.write(instruction);
+	}
+
+	setTimeout(function() {
+		fdm.invertAll();
+		serialPort.write(fdm.buildInstruction());
+	}, 1000);
+
+}
