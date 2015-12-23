@@ -63,7 +63,7 @@ function FlipdotManager(startAddress) {
 	for (var i = 0; i < signcolumns; i++) {
 		this.controllers[i] = [];
 		for (var j = 0; j < signrows; j++) {
-			this.controllers[i][j] = new FlipdotController(startAddress + i + j * signrows);
+			this.controllers[i][j] = new FlipdotController(startAddress + j + i * signrows);
 		}
 	}
 }
