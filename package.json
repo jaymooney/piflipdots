@@ -4,6 +4,7 @@
   "description": "raspberry pi driver for a bunch of flipdot signs",
   "main": "cycle.js",
   "dependencies": {
+    "canvas": "^1.3.5",
     "serialport": "^2.0.5"
   },
   "devDependencies": {},

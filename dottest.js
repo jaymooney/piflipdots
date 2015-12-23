@@ -10,22 +10,7 @@ var serialPort = new SerialPort("/dev/ttyAMA0", {
 
 serialPort.on("open", function () {
   console.log("open");
-//  randomDots();
-	fdm.controllers.forEach(conts => conts.forEach(cont => cont.clear()));
-	fdm.setPixel(true, 0,0);
-	fdm.setPixel(true, 1,1);
-	fdm.setPixel(true, 5,5);
-	fdm.setPixel(true, 7,7);
-	fdm.setPixel(true, 8,8);
-	fdm.setPixel(true, 10,10);
-	fdm.setPixel(true, 0,13);
-	fdm.setPixel(true, 0,14);
-	fdm.setPixel(true, 0, 26);
-	fdm.setPixel(true, 0, 27);
-	var instruction = fdm.buildInstruction();
-	if (instruction) {
-		serialPort.write(instruction, dieOnError);
-	}
+  randomDots();
 });
 
 var width = 28;
@@ -33,17 +18,16 @@ var height = 28;
 
 function randomDots() {
 	fdm.controllers.forEach(conts => conts.forEach(cont => cont.clear()));
-	for (let i of Array(160)) {
+	for (let i of Array(360)) {
 		let x = Math.floor(Math.random() * width);
 		let y = Math.floor(Math.random() * height);
 		fdm.setPixel(true, x, y);
 	}
-		fdm.setPixel(true, 1, 27);
 	var instruction = fdm.buildInstruction();
 	if (instruction) {
 		serialPort.write(instruction, dieOnError);
 	}
-	setTimeout(invertedRandom, 1000);
+	setTimeout(invertedRandom, 120);
 }
 
 function invertedRandom() {
@@ -53,7 +37,7 @@ function invertedRandom() {
                 serialPort.write(instruction, dieOnError);
         }
 setTimeout(function() {
-        for (let i of Array(160)) {
+        for (let i of Array(260)) {
                 let x = Math.floor(Math.random() * width);
                 let y = Math.floor(Math.random() * height);
                 fdm.setPixel(false, x, y);
@@ -62,8 +46,8 @@ setTimeout(function() {
         if (instruction) {
                 serialPort.write(instruction, dieOnError);
         }
-        setTimeout(randomDots, 1000);
-}, 400);
+        setTimeout(randomDots, 120);
+}, 120);
 }
 
 function dieOnError(err) {
