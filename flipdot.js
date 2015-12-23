@@ -92,12 +92,12 @@ function FlipdotManager(numRows, numCols, startAddress) {
 FlipdotManager.prototype.drawNativeText = function(text, row) {
 	var data = TextRenderer.makeSentence(text);
 	for (var i = 0; i < data.length; i++) {
-		if (i > this.width) {
+		if (i >= this.width) {
 			// no wrapping. yet.
 			break;
 		}
 		var col = Math.floor(i / dotsx);
-		this.controllers[col][row].setColumn(i % dotsx), data[i]);
+		this.controllers[col][row].setColumn(i % dotsx, data[i]);
 	};
 };
 

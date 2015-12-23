@@ -42,7 +42,7 @@ module.exports.makeSentence = function makeSentence(str) {
 			bitmap = blank;
 		}
 		Array.prototype.push.apply(sentence, bitmap);
-		sentence.push(0, 0, 0, 0, 0);
+		sentence.push(0);
 	}
 	return sentence;
 }
@@ -390,5 +390,5 @@ var alphabet = module.exports.alphabet = {
 		 " 0   ",
 		 "0    "
 	]),
-	" ": [0]
+	" ": blank
 };
