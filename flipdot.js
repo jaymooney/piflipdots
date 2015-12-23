@@ -23,12 +23,11 @@ FlipdotController.prototype.setDots = function(dots) {
 };
 
 // memoizing the bitmasks to set a specific pixel
-var bitonarraymask = (new Array(6)).fill(0).map((n, i) => 1 << i);
-var bitoffarraymask = (new Array(6)).fill(0).map((n, i) => allon - (1 << i));
+var bitonarraymask = (new Array(7)).fill(0).map((n, i) => 1 << i);
+var bitoffarraymask = (new Array(7)).fill(0).map((n, i) => ~(1 << i));
 
 FlipdotController.prototype.setPixel = function(on, x, y) {
 	this.isDirty = true;
-	var bit = 2 ^ y;
 	if (on) {
 		this.dots[x] |= bitonarraymask[y];
 	} else {
