@@ -3,7 +3,7 @@
 var SerialPort = require("serialport").SerialPort
 var FD = require("./flipdot");
 
-var fdm = new FD.FlipdotManager(8, 2, 2);
+var fdm = new FD.FlipdotManager(2, 2, 8);
 var serialPort = new SerialPort("/dev/ttyAMA0", {
   baudrate: 57600
 });

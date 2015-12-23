@@ -4,7 +4,7 @@ var SerialPort = require("serialport").SerialPort
 var FD = require("./flipdot");
 var fs = require("fs");
 
-var fdm = new FD.FlipdotManager(8, 2, 2);
+var fdm = new FD.FlipdotManager(2, 2, 8);
 
 var serialPort = new SerialPort("/dev/ttyAMA0", {
  	baudrate: 57600
@@ -12,7 +12,7 @@ var serialPort = new SerialPort("/dev/ttyAMA0", {
 
 serialPort.on("open", function () {
 	console.log("serial port open");
-	drawText();
+	drawImage();
 });
 
 function drawImage() {
