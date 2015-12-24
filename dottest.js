@@ -27,7 +27,7 @@ function randomDots() {
 	if (instruction) {
 		serialPort.write(instruction, dieOnError);
 	}
-	setTimeout(invertedRandom, 200);
+	setTimeout(invertedRandom, 100);
 }
 
 function invertedRandom() {
@@ -46,8 +46,8 @@ setTimeout(function() {
         if (instruction) {
                 serialPort.write(instruction, dieOnError);
         }
-        setTimeout(randomDots, 200);
-}, 200);
+        setTimeout(randomDots, 100);
+}, 100);
 }
 
 function dieOnError(err) {

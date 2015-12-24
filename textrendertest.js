@@ -3,7 +3,7 @@
 var SerialPort = require("serialport").SerialPort
 var FD = require("./flipdot");
 
-var fdm = new FD.FlipdotManager(2, 2, 8);
+var fdm = new FD.FlipdotManager(1, 2, 8);
 
 var queue = [];
 
@@ -19,22 +19,24 @@ serialPort.on("open", function () {
 	setTimeout(drawText, 1000);
 });
 
-var startText0 = "Hi Todd! ".toUpperCase();
-var startText1 = "Merryxmas".toUpperCase();
+var s0 = "Happy    ".toUpperCase();
+var s1 = "New Year".toUpperCase();
+var e0 = "dandelion ".toUpperCase();
+var e1 = "chocolate".toUpperCase();
 
 function drawText() {
-	fdm.drawNativeText(startText0, 0);
-	fdm.drawNativeText(startText1, 1);
+	fdm.drawNativeText(s0, 0);
+	fdm.drawNativeText(s1, 1);
 
 	var instruction = fdm.buildInstruction();
 	queue.push(instruction);
 	setTimeout(doTransition, 4000);
 }
 
-function doTransition() {
-	var i1 = buildTransition(startText0, "Dandelion".toUpperCase(), 0);
-	var i2 = buildTransition(startText1, "Chocolate".toUpperCase(), 1);
-	var l = Math.max(i1.length, i2.length)
+function doTransitionBack() {
+	var i1 = buildTransition(e0, s0, 0);
+	var i2 = buildTransition(e1, s1, 1);
+	var l = Math.max(i1.length, i2.length);
 	for (var i = 0; i < l; i++) {
 		var instruction = i1[i];
 		if (instruction) {
@@ -45,7 +47,26 @@ function doTransition() {
 			instruction = i2[i];
 		}
 		queue.push(instruction);
-	};
+	}
+	setTimeout(doTransition, 4000);
+}
+
+function doTransition() {
+	var i1 = buildTransition(s0, e0, 0);
+	var i2 = buildTransition(s1, e1, 1);
+	var l = Math.max(i1.length, i2.length);
+	for (var i = 0; i < l; i++) {
+		var instruction = i1[i];
+		if (instruction) {
+			if (i2[i]) {
+				instruction = instruction.concat(", ", i2[i]);
+			}
+		} else {
+			instruction = i2[i];
+		}
+		queue.push(instruction);
+	}
+	setTimeout(doTransitionBack, 4000);
 }
 
 function buildTransition(start, end, row) {
@@ -74,11 +95,11 @@ function buildTransition(start, end, row) {
 	return instructions;
 }
 
-setInterval(drawNext, 120);
+setInterval(drawNext, 100);
 
 function drawNext() {
 	if (queue.length) {
 		var i = queue.shift();
-		serialPort.write(instruction, function(err) { if (err) throw err; });
+		serialPort.write(i, function(err) { if (err) throw err; });
 	}
 }
