@@ -20,8 +20,8 @@ serialPort.on("open", function () {
 });
 
 var s0 = "Happy    ".toUpperCase();
-var s1 = "New Year".toUpperCase();
-var e0 = "dandelion ".toUpperCase();
+var s1 = "New Year ".toUpperCase();
+var e0 = "dandelion".toUpperCase();
 var e1 = "chocolate".toUpperCase();
 
 function drawText() {
@@ -73,7 +73,6 @@ function buildTransition(start, end, row) {
 	var instructions = [];
 	var current = start;
 	while (current !== end) {
-		console.log(`${current} : ${end}`);
 		for (var i = 0; i < current.length; i++) {
 			if (current[i] !== end[i]) {
 				var replacement;

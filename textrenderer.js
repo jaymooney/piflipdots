@@ -6,7 +6,7 @@
 
 var charWidth = module.exports.charWidth = 5;
 var charHeight = module.exports.charHeight = 7; 
-var blank = [0,0,0,0,0];
+var blank = [0,0,0,0];
 
 function createBitmap(pixelArray) {
 	var hasFirstRow = pixelArray.length === charHeight;
@@ -19,7 +19,6 @@ function createBitmap(pixelArray) {
 
 	for (var i = 0; i < charWidth; i++) {
 		var coldata = 0;
-
 
 		for (var j = 0; j < pixelArray.length; j++) {
 			if (pixelArray[j][i] === "0") {
@@ -42,7 +41,9 @@ module.exports.makeSentence = function makeSentence(str) {
 			bitmap = blank;
 		}
 		Array.prototype.push.apply(sentence, bitmap);
-		sentence.push(0);
+		if (ch !== "M" && ch !== "W" && ch !== "X") {
+			sentence.push(0);
+		}
 	}
 	return sentence;
 }
@@ -50,7 +51,7 @@ module.exports.makeSentence = function makeSentence(str) {
 /**
  * the alphabet encoded in columns of bits, 5x5, except for Q which has one extra row for its tail
 */
-var alphabet = module.exports.alphabet = {
+var alphabet5 = {
 	A: createBitmap([
 		 " 000 ",
 		 "0   0",
@@ -399,3 +400,359 @@ var alphabet = module.exports.alphabet = {
 	]),
 	" ": blank
 };
+
+/**
+ * the alphabet encoded in columns of bits, 5x5, except for Q which has one extra row for its tail
+*/
+var alphabet4 = {
+	A: createBitmap([
+		 " 00 ",
+		 "0  0",
+		 "0000",
+		 "0  0",
+		 "0  0"
+	]),
+	B: createBitmap([
+		 "000 ",
+		 "0  0",
+		 "0000",
+		 "0  0",
+		 "000 "
+	]),
+	C: createBitmap([
+		 " 000",
+		 "0   ",
+		 "0   ",
+		 "0   ",
+		 " 000"
+	]),
+	D: createBitmap([
+		 "000 ",
+		 "0  0",
+		 "0  0",
+		 "0  0",
+		 "000 "
+	]),
+	E: createBitmap([
+		 "0000",
+		 "0   ",
+		 "000 ",
+		 "0   ",
+		 "0000"
+	]),
+	F: createBitmap([
+		 "0000",
+		 "0   ",
+		 "000 ",
+		 "0   ",
+		 "0   "
+	]),
+	G: createBitmap([
+		 " 000",
+		 "0   ",
+		 "0 00",
+		 "0  0",
+		 " 000"
+	]),
+	H: createBitmap([
+		 "0  0",
+		 "0  0",
+		 "0000",
+		 "0  0",
+		 "0  0"
+	]),
+	I: createBitmap([
+		 "0000",
+		 "  0 ",
+		 "  0 ",
+		 "  0 ",
+		 "0000"
+	]),
+	J: createBitmap([
+		 "0000",
+		 "  0 ",
+		 "  0 ",
+		 "  0 ",
+		 "00  "
+	]),
+	K: createBitmap([
+		 "0  0",
+		 "0 0 ",
+		 "00  ",
+		 "0 0 ",
+		 "0  0"
+	]),
+	L: createBitmap([
+		 "0   ",
+		 "0   ",
+		 "0   ",
+		 "0   ",
+		 "0000"
+	]),
+	M: createBitmap([
+		 "0   0",
+		 "00 00",
+		 "0 0 0",
+		 "0   0",
+		 "0   0"
+	]),
+	N: createBitmap([
+		 "0  0",
+		 "00 0",
+		 "0 00",
+		 "0  0",
+		 "0  0"
+	]),
+	O: createBitmap([
+		 " 00 ",
+		 "0  0",
+		 "0  0",
+		 "0  0",
+		 " 00 "
+	]),
+	P: createBitmap([
+		 "000 ",
+		 "0  0",
+		 "000 ",
+		 "0   ",
+		 "0   "
+	]),
+	Q: createBitmap([
+		 " 00 ",
+		 "0  0",
+		 "0  0",
+		 "0  0",
+		 " 00 ",
+		 "   0"
+	]),
+	R: createBitmap([
+		 "000 ",
+		 "0  0",
+		 "000 ",
+		 "0 0 ",
+		 "0  0"
+	]),
+	S: createBitmap([
+		 " 000",
+		 "0   ",
+		 " 00 ",
+		 "   0",
+		 "000 "
+	]),
+	T: createBitmap([
+		 "0000",
+		 "  0 ",
+		 "  0 ",
+		 "  0 ",
+		 "  0 "
+	]),
+	U: createBitmap([
+		 "0  0",
+		 "0  0",
+		 "0  0",
+		 "0  0",
+		 " 00 "
+	]),
+	V: createBitmap([
+		 "0  0",
+		 "0  0",
+		 "0  0",
+		 " 0 0",
+		 "  0  "
+	]),
+	W: createBitmap([
+		 "0   0",
+		 "0   0",
+		 "0 0 0",
+		 "00 00",
+		 "0   0"
+	]),
+	X: createBitmap([
+		 "0   0",
+		 " 0 0 ",
+		 "  0  ",
+		 " 0 0 ",
+		 "0   0"
+	]),
+	Y: createBitmap([
+		 "0  0",
+		 "0  0",
+		 " 00 ",
+		 "  0 ",
+		 "  0 "
+	]),
+	Z: createBitmap([
+		 "0000",
+		 "   0",
+		 "  0 ",
+		 " 0  ",
+		 "0000"
+	]),
+
+	// NUMBERS
+
+	"0": createBitmap([
+		 " 000",
+		 "0  00",
+		 "0 0 0",
+		 "00  0",
+		 " 000 "
+	]),
+	"1": createBitmap([
+		 "  0  ",
+		 " 00  ",
+		 "  0  ",
+		 "  0  ",
+		 " 000 "
+	]),
+	"2": createBitmap([
+		 " 000 ",
+		 "0   0",
+		 "  00 ",
+		 " 0   ",
+		 "00000"
+	]),
+	"3": createBitmap([
+		 " 000 ",
+		 "0   0",
+		 "  00 ",
+		 "0   0",
+		 " 000 "
+	]),
+	"4": createBitmap([
+		 "    0",
+		 "   00",
+		 "  0 0",
+		 " 0000",
+		 "    0"
+	]),
+	"5": createBitmap([
+		 "00000",
+		 "0    ",
+		 "0000 ",
+		 "    0",
+		 "0000 "
+	]),
+	"6": createBitmap([
+		 " 000",
+		 "0    ",
+		 "0000 ",
+		 "0   0",
+		 " 000"
+	]),
+	"7": createBitmap([
+		 "00000",
+		 "    0",
+		 "   0 ",
+		 "  0  ",
+		 " 0   "
+	]),
+	"8": createBitmap([
+		 " 000 ",
+		 "0   0",
+		 " 000 ",
+		 "0   0",
+		 " 000 "
+	]),
+	"9": createBitmap([
+		 " 000 ",
+		 "0   0",
+		 " 000 ",
+		 "    0",
+		 " 000 "
+	]),
+
+	// SYMBOLS
+
+	"$": createBitmap([
+		 "  0  ",
+		 " 0000",
+		 "0 0  ",
+		 " 000 ",
+		 "  0 0",
+		 "0000 ",
+		 "  0  "
+	]),
+	"#": createBitmap([
+		 " 0 0 ",
+		 "00000",
+		 " 0 0 ",
+		 "00000",
+		 " 0 0 "
+	]),
+	"+": createBitmap([
+		 "     ",
+		 "  0  ",
+		 " 000 ",
+		 "  0  ",
+		 "     "
+	]),
+	"*": createBitmap([
+		 "  0 ",
+		 "00000",
+		 " 000 ",
+		 "00000",
+		 "  0 "
+	]),
+	":": createBitmap([
+		 "     ",
+		 "  0  ",
+		 "     ",
+		 "  0  ",
+		 "     "
+	]),
+	".": createBitmap([
+		 "     ",
+		 "     ",
+		 "     ",
+		 "     ",
+		 "  0  "
+	]),
+	",": createBitmap([
+		 "     ",
+		 "     ",
+		 "     ",
+		 "     ",
+		 "  0  ",
+		 " 0   "
+	]),
+	"!": createBitmap([
+		 "  0  ",
+		 "  0  ",
+		 "  0  ",
+		 "     ",
+		 "  0  "
+	]),
+	"?": createBitmap([
+		 " 00  ",
+		 "   0 ",
+		 "  0  ",
+		 "     ",
+		 "  0  "
+	]),
+	"(": createBitmap([
+		 "   0 ",
+		 "  0  ",
+		 "  0  ",
+		 "  0  ",
+		 "   0 "
+	]),
+	"(": createBitmap([
+		 "  0  ",
+		 "   0 ",
+		 "   0 ",
+		 "   0 ",
+		 "  0  "
+	]),
+	"/": createBitmap([
+		 "    0",
+		 "   0 ",
+		 "  0  ",
+		 " 0   ",
+		 "0    "
+	]),
+	" ": blank
+};
+
+var alphabet = module.exports.alphabet = alphabet4;
+
