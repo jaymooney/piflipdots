@@ -6,7 +6,7 @@
 
 var charWidth = module.exports.charWidth = 5;
 var charHeight = module.exports.charHeight = 7; 
-var blank = [0,0,0,0];
+var blank = new Array(charWidth).fill(0);
 
 function createBitmap(pixelArray) {
 	var hasFirstRow = pixelArray.length === charHeight;
@@ -41,12 +41,10 @@ module.exports.makeSentence = function makeSentence(str) {
 			bitmap = blank;
 		}
 		Array.prototype.push.apply(sentence, bitmap);
-		if (ch !== "M" && ch !== "W" && ch !== "X") {
-			sentence.push(0);
-		}
+		sentence.push(0);
 	}
 	return sentence;
-}
+};
 
 /**
  * the alphabet encoded in columns of bits, 5x5, except for Q which has one extra row for its tail
@@ -754,5 +752,5 @@ var alphabet4 = {
 	" ": blank
 };
 
-var alphabet = module.exports.alphabet = alphabet4;
+var alphabet = module.exports.alphabet = alphabet5;
 

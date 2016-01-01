@@ -3,7 +3,7 @@
 var SerialPort = require("serialport").SerialPort
 var FD = require("./flipdot");
 
-var fdm = new FD.FlipdotManager(1, 2, 8);
+var fdm = new FD.FlipdotManager(2, 2, 8);
 
 var queue = [];
 
@@ -19,23 +19,40 @@ serialPort.on("open", function () {
 	setTimeout(drawText, 1000);
 });
 
-var s0 = "Happy    ".toUpperCase();
-var s1 = "New Year ".toUpperCase();
-var e0 = "dandelion".toUpperCase();
-var e1 = "chocolate".toUpperCase();
+var mode = "all";
+
+var textStart = [
+	"DANDELION",
+	"CHOCOLATE",
+	"HAPPY NEW",
+	"  YEAR   "
+];
+
+var textEnd = [
+	"GO WATCH ",
+	"   THE   ",
+	"FIREWORKS",
+	"         "
+];
 
 function drawText() {
-	fdm.drawNativeText(s0, 0);
-	fdm.drawNativeText(s1, 1);
+	textStart.forEach((s, i) => fdm.drawNativeText(s, i));
 
 	var instruction = fdm.buildInstruction();
 	queue.push(instruction);
 	setTimeout(doTransition, 4000);
 }
 
+function* transitionGenerator(transitions) {
+	var l = Math.max.apply(null, transitions.map(t => t.length));
+}
+
 function doTransitionBack() {
-	var i1 = buildTransition(e0, s0, 0);
-	var i2 = buildTransition(e1, s1, 1);
+	//var transitions = textStart.map((s, i) => buildTransition(textEnd[i], s, i));
+
+	var i1 = buildTransition(textEnd[0], textStart[0], 0);
+	var i2 = buildTransition(textEnd[1], textStart[1], 1);
+	
 	var l = Math.max(i1.length, i2.length);
 	for (var i = 0; i < l; i++) {
 		var instruction = i1[i];
@@ -52,8 +69,9 @@ function doTransitionBack() {
 }
 
 function doTransition() {
-	var i1 = buildTransition(s0, e0, 0);
-	var i2 = buildTransition(s1, e1, 1);
+	var i1 = buildTransition(textStart[0], textEnd[0], 0);
+	var i2 = buildTransition(textStart[1], textEnd[1], 1);
+
 	var l = Math.max(i1.length, i2.length);
 	for (var i = 0; i < l; i++) {
 		var instruction = i1[i];
