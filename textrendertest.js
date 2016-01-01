@@ -45,43 +45,30 @@ function drawText() {
 
 function* transitionGenerator(transitions) {
 	var l = Math.max.apply(null, transitions.map(t => t.length));
+	for (var i = 0; i < l; i++) {
+		var merged = transitions.reduce((prev, next) => {
+			if (i < next.length) {
+				 return prev.concat(next[i]);
+			} else {
+				return prev;
+			}
+		}, []);
+		yield merged;
+	}
 }
 
 function doTransitionBack() {
-	//var transitions = textStart.map((s, i) => buildTransition(textEnd[i], s, i));
+	var transitions = textStart.map((s, i) => buildTransition(textEnd[i], s, i));
 
-	var i1 = buildTransition(textEnd[0], textStart[0], 0);
-	var i2 = buildTransition(textEnd[1], textStart[1], 1);
-	
-	var l = Math.max(i1.length, i2.length);
-	for (var i = 0; i < l; i++) {
-		var instruction = i1[i];
-		if (instruction) {
-			if (i2[i]) {
-				instruction = instruction.concat(", ", i2[i]);
-			}
-		} else {
-			instruction = i2[i];
-		}
+	for (var instruction of transitionGenerator(transitions)) {
 		queue.push(instruction);
 	}
 	setTimeout(doTransition, 4000);
 }
 
 function doTransition() {
-	var i1 = buildTransition(textStart[0], textEnd[0], 0);
-	var i2 = buildTransition(textStart[1], textEnd[1], 1);
-
-	var l = Math.max(i1.length, i2.length);
-	for (var i = 0; i < l; i++) {
-		var instruction = i1[i];
-		if (instruction) {
-			if (i2[i]) {
-				instruction = instruction.concat(", ", i2[i]);
-			}
-		} else {
-			instruction = i2[i];
-		}
+	var transitions = textStart.map((s, i) => buildTransition(s, textEnd[i], i));
+	for (var instruction of transitionGenerator(transitions)) {
 		queue.push(instruction);
 	}
 	setTimeout(doTransitionBack, 4000);
