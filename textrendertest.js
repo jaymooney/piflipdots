@@ -35,6 +35,8 @@ var textEnd = [
 	"         "
 ];
 
+var transitionTime = 16 * 1000;
+
 function drawText() {
 	textStart.forEach((s, i) => fdm.drawNativeText(s, i));
 
@@ -44,6 +46,12 @@ function drawText() {
 }
 
 function* transitionGenerator(transitions) {
+	for (let t of transitions) {
+		yield* t;
+	}
+}
+
+function* transitionGenerator2(transitions) {
 	var l = Math.max.apply(null, transitions.map(t => t.length));
 	for (var i = 0; i < l; i++) {
 		var merged = transitions.reduce((prev, next) => {
@@ -63,7 +71,7 @@ function doTransitionBack() {
 	for (var instruction of transitionGenerator(transitions)) {
 		queue.push(instruction);
 	}
-	setTimeout(doTransition, 4000);
+	setTimeout(doTransition, transitionTime);
 }
 
 function doTransition() {
@@ -71,7 +79,7 @@ function doTransition() {
 	for (var instruction of transitionGenerator(transitions)) {
 		queue.push(instruction);
 	}
-	setTimeout(doTransitionBack, 4000);
+	setTimeout(doTransitionBack, transitionTime);
 }
 
 function buildTransition(start, end, row) {
