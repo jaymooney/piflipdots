@@ -222,7 +222,7 @@ var alphabet5 = {
 	Y: createBitmap([
 		 "0   0",
 		 "0   0",
-		 " 0 0",
+		 " 0 0 ",
 		 "  0  ",
 		 "  0  "
 	]),
@@ -400,9 +400,9 @@ var alphabet5 = {
 };
 
 /**
- * the alphabet encoded in columns of bits, 5x5, except for Q which has one extra row for its tail
+ * mostly 5x4, except M W X and Y, also T I are only 5x3, extra space makes every char 5x5
 */
-var alphabet4 = {
+var alphabet45 = {
 	A: createBitmap([
 		 " 00 ",
 		 "0  0",
@@ -460,11 +460,11 @@ var alphabet4 = {
 		 "0  0"
 	]),
 	I: createBitmap([
-		 "0000",
+		 " 000",
 		 "  0 ",
 		 "  0 ",
 		 "  0 ",
-		 "0000"
+		 " 000"
 	]),
 	J: createBitmap([
 		 "0000",
@@ -538,7 +538,7 @@ var alphabet4 = {
 		 "000 "
 	]),
 	T: createBitmap([
-		 "0000",
+		 " 000",
 		 "  0 ",
 		 "  0 ",
 		 "  0 ",
@@ -573,17 +573,17 @@ var alphabet4 = {
 		 "0   0"
 	]),
 	Y: createBitmap([
-		 "0  0",
-		 "0  0",
-		 " 00 ",
-		 "  0 ",
-		 "  0 "
+		 "0   0",
+		 "0   0",
+		 " 0 0 ",
+		 "  0  ",
+		 "  0  "
 	]),
 	Z: createBitmap([
 		 "0000",
-		 "   0",
 		 "  0 ",
 		 " 0  ",
+		 "0   ",
 		 "0000"
 	]),
 

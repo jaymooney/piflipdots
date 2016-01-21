@@ -2,62 +2,7 @@
 
 var Canvas = require("canvas");
 var TextRenderer = require("./textrenderer");
-
-var dotsy = 7;
-var dotsx = 28;
-var allon = 0b1111111;
-
-function FlipdotController(address) {
-	this.isDirty = false;
-	this.dots = new Uint8Array(dotsx);
-	this.address = address;
-}
-
-FlipdotController.prototype.clear = function(toWhite) {
-	var val = toWhite ? 127 : 0;
-	this.dots.fill(val);
-	this.isDirty = true;
-};
-
-FlipdotController.prototype.setDots = function(dots) {
-	this.isDirty = true;
-	this.dots = dots;
-};
-
-FlipdotController.prototype.setColumn = function(index, val) {
-	this.isDirty = true;
-	this.dots[index] = val;
-};
-
-// memoizing the bitmasks to set a specific pixel
-var bitonarraymask = (new Array(7)).fill(0).map((n, i) => 1 << i);
-var bitoffarraymask = (new Array(7)).fill(0).map((n, i) => ~(1 << i));
-
-FlipdotController.prototype.setPixel = function(on, x, y) {
-	this.isDirty = true;
-	if (on) {
-		this.dots[x] |= bitonarraymask[y];
-	} else {
-		this.dots[x] &= bitoffarraymask[y];
-	}
-};
-
-FlipdotController.prototype.invert = function() {
-	this.isDirty = true;
-	var inverted = this.dots.map(val => val ^ allon);
-	this.dots = inverted;
-};
-
-FlipdotController.prototype.writeDots = function(outputArray) {
-	if (this.isDirty) {
-		outputArray.push(0x80);
-		outputArray.push(0x83);
-		outputArray.push(this.address);
-		Array.prototype.push.apply(outputArray, this.dots);
-		outputArray.push(0x8f);
-		this.isDirty = false;
-	}
-};
+var FlipdotController = require("./flipdotController");
 
 function blackOrWhitify(imageData, pixelOffset) {
 	var luminance = imageData[pixelOffset] * 0.21 + imageData[pixelOffset + 1] * 0.72 + imageData[pixelOffset + 2] * 0.07;
@@ -71,8 +16,8 @@ function blackOrWhitify2(imageData, pixelOffset) {
 
 function FlipdotManager(numRows, numCols, startAddress) {
 	numRows *= 2;
-	this.width = numCols * dotsx;
-	this.height = numRows * dotsy;
+	this.width = numCols * FlipdotController.DOTS_X;
+	this.height = numRows * FlipdotController.DOTS_Y;
 	this.controllers = [];
 	for (var i = 0; i < numCols; i++) {
 		this.controllers[i] = [];
@@ -96,8 +41,8 @@ FlipdotManager.prototype.drawNativeText = function(text, row) {
 			// no wrapping. yet.
 			break;
 		}
-		var col = Math.floor(i / dotsx);
-		this.controllers[col][row].setColumn(i % dotsx, data[i]);
+		var col = Math.floor(i / FlipdotController.DOTS_X);
+		this.controllers[col][row].setColumn(i % FlipdotController.DOTS_X, data[i]);
 	};
 };
 
@@ -122,8 +67,8 @@ FlipdotManager.prototype.drawCanvasImage = function(imageData, sizeToFit) {
 
 FlipdotManager.prototype.getControllerByPixel = function(x, y) {
 	// memoize this...
-	var col = Math.floor(x / dotsx);
-	var row = Math.floor(y / dotsy);
+	var col = Math.floor(x / FlipdotController.DOTS_X);
+	var row = Math.floor(y / FlipdotController.DOTS_Y);
 	return this.controllers[col][row];
 };
 
@@ -141,7 +86,7 @@ FlipdotManager.prototype.invertAll = function () {
 
 FlipdotManager.prototype.setPixel = function(on, x, y) {
 	var fd = this.getControllerByPixel(x, y);
-	fd.setPixel(on, x % dotsx, y % dotsy);
+	fd.setPixel(on, x % FlipdotController.DOTS_X, y % FlipdotController.DOTS_Y);
 };
 
 FlipdotManager.prototype.copyFromCanvas = function() {
@@ -174,5 +119,4 @@ FlipdotManager.prototype.drawPixels = function(pixels, x, y) {
 	// slice pixels into 
 }
 
-module.exports.FlipdotController = FlipdotController;
 module.exports.FlipdotManager = FlipdotManager;

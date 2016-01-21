@@ -3,7 +3,7 @@
 var SerialPort = require("serialport").SerialPort
 var FD = require("./flipdot");
 
-var fdm = new FD.FlipdotManager(2, 2, 8);
+var fdm = new FD.FlipdotManager(4, 4, 0);
 
 var queue = [];
 
