@@ -18,10 +18,10 @@ serialPort.on("open", function () {
 	fdm.clearAll(false);
 	var instruction = fdm.buildInstruction();
 	queue.push(instruction);
-	fdm.clearAll(true);
+	fdm.invertAll();
 	instruction = fdm.buildInstruction();
 	queue.push(instruction);
-	fdm.clearAll(false);
+	fdm.invertAll();
 	instruction = fdm.buildInstruction();
 	queue.push(instruction);
 	setTimeout(drawText, 1000);
@@ -39,28 +39,28 @@ function textPand(str) {
 }
 
 var textStart = [
-	"   WELCOME  TO",
-	"    DANDELION",
-	" ",
-	"   small batch",
-	"    CHOCOLATE",
+	"    WELCOME  TO",
 	"",
+	"     DANDELION",
 	"",
+	"    small batch",
+	"",
+	"     CHOCOLATE",
 	""
 ].map(textPand);
 
 var textEnd = [
-	"DANI YOUR HOT",
-	"CHOCOLATE IS READY",
-	"this row      bork",
+	"HOT CHOCOLATE",
+	"for everybody!",
 	"",
 	"",
 	"",
+	"...except greg",
 	"",
 	"bitch"
 ].map(textPand);
 
-var transitionTime = 16 * 1000;
+var transitionTime = 20 * 1000;
 
 function drawText() {
 	textStart.forEach((s, i) => fdm.drawNativeText(s, i));
@@ -115,7 +115,11 @@ function buildTransition(start, end, row) {
 			if (current[i] !== end[i]) {
 				var replacement;
 				if (current[i] === " ") {
-					replacement = "A";
+					if (end[i] > "Z" || end[i] < "A") {
+						replacement = end[i];
+					} else {
+						replacement = "A";
+					}
 				} else if (current[i] >= "Z" || current[i] < "A") {
 					replacement = " ";
 				} else {
