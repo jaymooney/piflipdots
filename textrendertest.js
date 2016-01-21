@@ -5,6 +5,8 @@ var FD = require("./flipdot");
 
 var fdm = new FD.FlipdotManager(4, 4, 0);
 
+let NUM_CHARS = fdm.width / 6;
+
 var queue = [];
 
 var serialPort = new SerialPort("/dev/ttyAMA0", {
@@ -21,19 +23,36 @@ serialPort.on("open", function () {
 
 var mode = "all";
 
+function textPand(str) {
+	str = str.toUpperCase();
+	let toAdd = NUM_CHARS - str.length;
+	if (toAdd === 0) {
+		return str;
+	}
+	return str + new Array(toAdd).fill(" ").join("");
+}
+
 var textStart = [
-	"DANDELION",
-	"CHOCOLATE",
-	"HAPPY NEW",
-	"  YEAR   "
-];
+	"   WELCOME  TO",
+	"    DANDELION",
+	" ",
+	"   small batch",
+	"    CHOCOLATE",
+	"",
+	"",
+	""
+].map(textPand);
 
 var textEnd = [
-	"GO WATCH ",
-	"   THE   ",
-	"FIREWORKS",
-	"         "
-];
+	"DANI YOUR HOT",
+	"CHOCOLATE IS READY",
+	"this row      bork",
+	"",
+	"",
+	"",
+	"",
+	"bitch"
+].map(textPand);
 
 var transitionTime = 16 * 1000;
 
