@@ -3,7 +3,9 @@
 var SerialPort = require("serialport").SerialPort
 var FD = require("./flipdot");
 
-var fdm = new FD.FlipdotManager(2, 2, 8);
+var NUMTOSET = 1000;
+
+var fdm = new FD.FlipdotManager(4, 4, 0);
 var serialPort = new SerialPort("/dev/ttyAMA0", {
   baudrate: 57600
 });
@@ -18,7 +20,7 @@ var height = fdm.height;
 
 function randomDots() {
 	fdm.controllers.forEach(conts => conts.forEach(cont => cont.clear()));
-	for (let i of Array(360)) {
+	for (let i of Array(NUMTOSET)) {
 		let x = Math.floor(Math.random() * width);
 		let y = Math.floor(Math.random() * height);
 		fdm.setPixel(true, x, y);
@@ -37,7 +39,7 @@ function invertedRandom() {
                 serialPort.write(instruction, dieOnError);
         }
 setTimeout(function() {
-        for (let i of Array(260)) {
+        for (let i of Array(NUMTOSET)) {
                 let x = Math.floor(Math.random() * width);
                 let y = Math.floor(Math.random() * height);
                 fdm.setPixel(false, x, y);
