@@ -5,7 +5,7 @@ var FD = require("./flipdot");
 
 var fdm = new FD.FlipdotManager(4, 4, 0);
 
-let NUM_CHARS = fdm.width / 6;
+let NUM_CHARS = Math.floor(fdm.width / 6);
 
 var queue = [];
 
@@ -18,6 +18,12 @@ serialPort.on("open", function () {
 	fdm.clearAll(false);
 	var instruction = fdm.buildInstruction();
 	queue.push(instruction);
+	fdm.clearAll(true);
+	instruction = fdm.buildInstruction();
+	queue.push(instruction);
+	fdm.clearAll(false);
+	instruction = fdm.buildInstruction();
+	queue.push(instruction);
 	setTimeout(drawText, 1000);
 });
 
@@ -29,7 +35,7 @@ function textPand(str) {
 	if (toAdd === 0) {
 		return str;
 	}
-	return str + new Array(toAdd).fill(" ").join("");
+	return str + Array(toAdd).fill(" ").join("");
 }
 
 var textStart = [
