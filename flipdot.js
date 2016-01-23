@@ -65,6 +65,19 @@ FlipdotManager.prototype.drawCanvasImage = function(imageData, sizeToFit) {
 	}
 };
 
+FlipdotManager.prototype.copyFromCanvas = function() {
+	var imageData = this.ctx.getImageData(0, 0, this.width, this.height);
+	var pixel = 0;
+	for (var y = 0; y < imageData.height; y++) {
+		for (var x = 0; x < imageData.width; x++) {
+			var val = blackOrWhitify2(imageData.data, pixel)
+			this.setPixel(val, x, y);
+			pixel += 4;
+		}
+	}
+};
+
+
 FlipdotManager.prototype.getControllerByPixel = function(x, y) {
 	// memoize this...
 	var col = Math.floor(x / FlipdotController.DOTS_X);
@@ -87,18 +100,6 @@ FlipdotManager.prototype.invertAll = function () {
 FlipdotManager.prototype.setPixel = function(on, x, y) {
 	var fd = this.getControllerByPixel(x, y);
 	fd.setPixel(on, x % FlipdotController.DOTS_X, y % FlipdotController.DOTS_Y);
-};
-
-FlipdotManager.prototype.copyFromCanvas = function() {
-	var imageData = this.ctx.getImageData(0, 0, this.width, this.height);
-	var pixel = 0;
-	for (var x = 0; x < imageData.width; x++) {
-		for (var y = 0; y < imageData.height; y++) {
-			var val = blackOrWhitify2(imageData.data, pixel)
-			this.setPixel(val, x, y);
-			pixel += 4;
-		}
-	}
 };
 
 FlipdotManager.prototype.buildInstruction = function() {
