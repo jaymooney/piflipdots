@@ -50,12 +50,12 @@ var textStart = [
 ].map(textPand);
 
 var textEnd = [
-	"HOT CHOCOLATE",
+	"free hot chocolate",
 	"for everybody!",
 	"",
 	"",
-	"",
 	"...except greg",
+	"",
 	"",
 	"bitch"
 ].map(textPand);

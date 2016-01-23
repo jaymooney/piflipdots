@@ -4,7 +4,7 @@ var SerialPort = require("serialport").SerialPort
 var FD = require("./flipdot");
 var fs = require("fs");
 
-var fdm = new FD.FlipdotManager(2, 2, 8);
+var fdm = new FD.FlipdotManager(4, 4, 0);
 
 var serialPort = new SerialPort("/dev/ttyAMA0", {
  	baudrate: 57600
@@ -29,23 +29,16 @@ function drawImage() {
 			fdm.invertAll();
 			serialPort.write(fdm.buildInstruction());
 		}, 1000);
-
 	});
 }
 
 function drawText() {
-	if (err) throw err;
 	fdm.drawCanvasText("DANDELION", 0, 0);
-	fdm.drawCanvasText("CHOCOLATE", 0, 14);
+	fdm.drawCanvasText("CHOCOLATE", 0, 28);
 	fdm.copyFromCanvas();
 	var instruction = fdm.buildInstruction();
 	if (instruction) {
 		serialPort.write(instruction);
 	}
-
-	setTimeout(function() {
-		fdm.invertAll();
-		serialPort.write(fdm.buildInstruction());
-	}, 1000);
 
 }

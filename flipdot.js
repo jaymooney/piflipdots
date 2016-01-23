@@ -6,7 +6,7 @@ var FlipdotController = require("./flipdotController");
 
 function blackOrWhitify(imageData, pixelOffset) {
 	var luminance = imageData[pixelOffset] * 0.21 + imageData[pixelOffset + 1] * 0.72 + imageData[pixelOffset + 2] * 0.07;
-	return luminance > 127;
+	return luminance > 188;
 }
 
 function blackOrWhitify2(imageData, pixelOffset) {
@@ -49,7 +49,7 @@ FlipdotManager.prototype.drawNativeText = function(text, row) {
 FlipdotManager.prototype.drawCanvasText = function(text, x, y) {
 	var ctx = this.ctx;
 	ctx.fillStyle = "#fff";
-	ctx.font = "14px OPTICaslonBold-Cond";
+	ctx.font = "18px OPTICaslonBold-Cond";
 	ctx.textAlign = "left";
 	ctx.textBaseline = "hanging";
 	ctx.fillText(text, x, y);
@@ -70,7 +70,7 @@ FlipdotManager.prototype.copyFromCanvas = function() {
 	var pixel = 0;
 	for (var y = 0; y < imageData.height; y++) {
 		for (var x = 0; x < imageData.width; x++) {
-			var val = blackOrWhitify2(imageData.data, pixel)
+			var val = blackOrWhitify(imageData.data, pixel)
 			this.setPixel(val, x, y);
 			pixel += 4;
 		}
