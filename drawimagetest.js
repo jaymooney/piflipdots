@@ -12,11 +12,11 @@ var serialPort = new SerialPort("/dev/ttyAMA0", {
 
 serialPort.on("open", function () {
 	console.log("serial port open");
-	drawImage();
+	drawText();
 });
 
 function drawImage() {
-	fs.readFile("./dandelionfull.jpg", function(err, img) {
+	fs.readFile("./images/dandelionfull.jpg", function(err, img) {
 		if (err) throw err;
 		fdm.drawCanvasImage(img);
 		fdm.copyFromCanvas();

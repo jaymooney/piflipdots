@@ -11,7 +11,7 @@ var serialPort = new SerialPort("/dev/ttyAMA0", {
 serialPort.on("open", function () {
   console.log("open");
   
-  fdm.clearAll(false);
+  fdm.clearAll(process.argv[2] === "white");
   var instr = fdm.buildInstruction();
   serialPort.write(instr, function(err) { serialPort.close()});
 });
