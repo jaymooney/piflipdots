@@ -4,18 +4,21 @@ var FD = require("./flipdot");
 var express = require("express");
 var bodyParser = require("body-parser");
 
+var fdm = new FD.FlipdotManager(4, 4, 0);
+
 var app = express();
 
 app.use(bodyParser.json());
-app.use("/static", express.static(__dirname + "/static"));
+app.use(express.static(__dirname + "/static"));
 
 app.post("/text", function(req, res) {
-
+    fdm.drawNativeText("test derp", 4);
+    fdm.renderDots();
     res.sendStatus(200);
 });
 
 app.post("/clear", function(req, res) {
-	// flipdots.clear, add white/black
+    fdm.clearAll(req.body.toWhite);
     res.sendStatus(200);
 });
 

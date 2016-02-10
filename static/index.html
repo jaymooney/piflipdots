@@ -1,9 +1,33 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Dandelion Flipdot Controller</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dandelion Flipdot Controller</title>
+  <link href="css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
+  <h1>Chocolate for all!</h1>
+<div class="form-inline">
 
+  <div class="checkbox">
+    <label>
+      <input type="checkbox" id="clearToWhite"> White
+    </label>
+  </div>
+  <button type="button" class="btn btn-default" id="clearButton">Clear Everything</button>
+
+  </div>
+</div>
+
+<div class="form-inline">
+  <div class="form-group">
+    <label class="sr-only" for="textToWrite">Text</label>
+    <input type="text" class="form-control" id="textToWrite" placeholder="write something...">
+  </div>
+  <button type="button" class="btn btn-default">Write text</button>
+</div>
+  <script src="js/jquery-1.12.0.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/controller.js"></script>
 </body>
 </html>
