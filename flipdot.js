@@ -1,6 +1,7 @@
 "use strict";
 
 var Canvas = require("canvas");
+var InstructionEngine = require("./instructionEngine");
 var TextRenderer = require("./textrenderer");
 var FlipdotController = require("./flipdotController");
 
@@ -110,14 +111,11 @@ FlipdotManager.prototype.buildInstruction = function() {
 			c[j].writeDots(instruction);
 		}
 	}
-	if (instruction.length) {
-		return instruction;
-	}
+	return instruction;
 };
 
-FlipdotManager.prototype.drawPixels = function(pixels, x, y) {
-	// find start sign of x, y
-	// slice pixels into 
-}
+FlipdotManager.prototype.renderDots = function() {
+	InstructionEngine.push(this.buildInstruction());
+};
 
 module.exports.FlipdotManager = FlipdotManager;

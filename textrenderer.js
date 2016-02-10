@@ -32,6 +32,15 @@ function createBitmap(pixelArray) {
 	return ret;
 }
 
+function textPand(str, padding) {
+	str = str.toUpperCase();
+	let toAdd = padding - str.length;
+	if (toAdd === 0) {
+		return str;
+	}
+	return str + Array(toAdd).fill(" ").join("");
+}
+
 module.exports.makeSentence = function makeSentence(str) {
 	var sentence = [0];
 	var upper = str.toUpperCase();
