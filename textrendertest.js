@@ -51,7 +51,7 @@ var transitionTime = 20 * 1000;
 
 function drawText() {
 	textStart.forEach((s, i) => fdm.drawNativeText(s, i));
-	fdm.sendInstruction();
+	fdm.renderDots();
 
 	setTimeout(doTransition, 4000);
 }

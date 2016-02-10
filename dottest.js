@@ -1,60 +1,37 @@
 "use strict";
 
-var SerialPort = require("serialport").SerialPort
 var FD = require("./flipdot");
 
-var NUMTOSET = 1000;
+const NUMTOSET = 1000;
+const DELAY = 200;
 
 var fdm = new FD.FlipdotManager(4, 4, 0);
-var serialPort = new SerialPort("/dev/ttyAMA0", {
-  baudrate: 57600
-});
 
-serialPort.on("open", function () {
-  console.log("open");
-  randomDots();
-});
+setTimeout(randomDots, 1000);
 
-var width = fdm.width;
-var height = fdm.height;
+let width = fdm.width;
+let height = fdm.height;
 
 function randomDots() {
-	fdm.controllers.forEach(conts => conts.forEach(cont => cont.clear()));
-	for (let i of Array(NUMTOSET)) {
-		let x = Math.floor(Math.random() * width);
-		let y = Math.floor(Math.random() * height);
-		fdm.setPixel(true, x, y);
-	}
-	var instruction = fdm.buildInstruction();
-	if (instruction) {
-		serialPort.write(instruction, dieOnError);
-	}
-	setTimeout(invertedRandom, 100);
+	fdm.clearAll();
+	randomize(true);
+	setTimeout(invertedRandom, DELAY);
 }
 
 function invertedRandom() {
-        fdm.controllers.forEach(conts => conts.forEach(cont => cont.invert()));
-        var instruction = fdm.buildInstruction();
-        if (instruction) {
-                serialPort.write(instruction, dieOnError);
-        }
-setTimeout(function() {
+        fdm.invertAll();
+        fdm.renderDots();
+	setTimeout(function() {
+		randomize(false);
+        	setTimeout(randomDots, DELAY);
+	}, DELAY);
+}
+
+function randomize(onoff) {
         for (let i of Array(NUMTOSET)) {
                 let x = Math.floor(Math.random() * width);
                 let y = Math.floor(Math.random() * height);
-                fdm.setPixel(false, x, y);
+                fdm.setPixel(onoff, x, y);
         }
-        var instruction = fdm.buildInstruction();
-        if (instruction) {
-                serialPort.write(instruction, dieOnError);
-        }
-        setTimeout(randomDots, 100);
-}, 100);
-}
-
-function dieOnError(err) {
-	if (err) {
-		console.log("fatal error.");
-		throw err;
-	}
+        fdm.renderDots();
 }

@@ -8,7 +8,7 @@ var serialPort = new SerialPort("/dev/ttyAMA0", {
 
 serialPort.on("error", function(err) {
 	throw err;
-};
+});
 
 exports.open = function open(onOpen) {
 	serialPort.open(function (err) {

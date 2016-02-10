@@ -1,6 +1,6 @@
 "use strict";
 
-var serialPort = require("./serial");
+var serial = require("./serial");
 
 const DEFAULT_REFRESH_RATE = 100;
 var queue = [];
