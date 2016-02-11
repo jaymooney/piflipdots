@@ -12,13 +12,19 @@ app.use(bodyParser.json());
 app.use(express.static(__dirname + "/static"));
 
 app.post("/text", function(req, res) {
-    fdm.drawNativeText("test derp", 4);
-    fdm.renderDots();
-    res.sendStatus(200);
+    if (req.body.text) {
+        var row = req.body.row ? req.body.row - 1 || 0;
+        fdm.drawNativeText(req.body.text, row);
+        fdm.renderDots();
+        res.sendStatus(200);
+    } else {
+        res.sendStatus(400);
+    }
 });
 
 app.post("/clear", function(req, res) {
     fdm.clearAll(req.body.toWhite);
+    fdm.renderDots();
     res.sendStatus(200);
 });
 

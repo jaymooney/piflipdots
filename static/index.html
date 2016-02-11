@@ -2,32 +2,70 @@
 <html>
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Dandelion Flipdot Controller</title>
+  <title>Flipdot Controller</title>
   <link href="css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-  <h1>Chocolate for all!</h1>
-<div class="form-inline">
-
-  <div class="checkbox">
-    <label>
-      <input type="checkbox" id="clearToWhite"> White
-    </label>
-  </div>
-  <button type="button" class="btn btn-default" id="clearButton">Clear Everything</button>
-
-  </div>
+<div class="container">
+<div class="page-header">
+  <h1>Dandelion Flipdot Sign Controller</h1>
 </div>
 
-<div class="form-inline">
+<div class="form-horizontal">
+  <h4>Write on the sign</h4>
   <div class="form-group">
-    <label class="sr-only" for="textToWrite">Text</label>
-    <input type="text" class="form-control" id="textToWrite" placeholder="write something...">
+    <label class="col-sm-2 control-label" for="textToWrite">Text</label>
+    <div class="col-sm-10">
+    	<input type="text" class="form-control" id="textToWrite" maxlength="18" placeholder="...">
+    </div>
   </div>
-  <button type="button" class="btn btn-default">Write text</button>
+  <div class="form-group">
+	<label class="col-sm-2 control-label" for="rowToWrite">Line</label>
+    <div class="col-sm-10">
+	<select class="form-control" style="max-width:80px" id="rowToWrite">
+		<option>1</option>
+		<option>2</option>
+		<option>3</option>
+		<option>4</option>
+		<option>5</option>
+		<option>6</option>
+		<option>7</option>
+		<option>8</option>
+	</select>
+	</div>
+  </div>
+
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+		<button type="button" class="btn btn-primary" id="writeText">Write it!</button>
+	</div>
+  </div>
 </div>
-  <script src="js/jquery-1.12.0.min.js"></script>
-  <script src="js/bootstrap.min.js"></script>
-  <script src="js/controller.js"></script>
+
+<div class="col-sm-3">
+<div class="panel panel-danger">
+	<div class="panel-heading">
+		<h3 class="panel-title">Clear the sign</h3>
+	</div>
+	<div class="panel-body text-center">
+		<label class="radio-inline">
+			<input type="radio" name="clearOptions" id="clearToBlack" checked> Black 
+		</label>
+		<label class="radio-inline">
+			<input type="radio" name="clearOptions" id="clearToWhite"> White 
+		</label>
+		<br/><br/>
+		<button type="button" class="btn  btn-danger" id="clearButton">Clear all the dots</button>
+
+		<button type="button" class="btn  btn-danger" id="clearButton">Fast flipping mode</button>
+	</div>
+</div>
+</div>
+
+</div>
+
+<script src="js/jquery-1.12.0.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/controller.js"></script>
 </body>
 </html>

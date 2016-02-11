@@ -1,6 +1,25 @@
+$("#writeText").on("click", function(e) {
+	var data = {
+		text: $("#textToWrite").val(),
+		row: parseInt($("#rowToWrite").val())
+	};
+	$.ajax({
+		method: "POST",
+		url: "/text",
+    	data: JSON.stringify(data),
+    	contentType: "application/json",
+        success: function (response) {
+            console.log("yay success");
+        },
+        error: onError
+	});
+
+});
+
+
 $("#clearButton").on("click", function(e) {
 	var data = {
-		toWhite: $("#clearToWhite").is(":checked")
+		toWhite: $("#clearToWhite").val()
 	};
 	$.ajax({
 		method: "POST",
@@ -10,8 +29,12 @@ $("#clearButton").on("click", function(e) {
         success: function (response) {
             console.log("yay success");
         },
-        error: function (response) {
-            console.log("boo fail");
-        },
+        error: onError
 	});
 });
+
+
+
+function onError(response) {
+	console.log("boo fail");
+}
