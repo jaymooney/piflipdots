@@ -372,7 +372,7 @@ var alphabet5 = {
 	]),
 	"'": createBitmap([
 		 "  0  ",
-		 " 0   "
+		 " 0   ",
 		 "     ",
 		 "     ",
 		 "     "
