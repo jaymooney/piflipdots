@@ -19,7 +19,7 @@ $("#writeText").on("click", function(e) {
 
 $("#clearButton").on("click", function(e) {
 	var data = {
-		toWhite: $("#clearToWhite").val()
+		toWhite: $("#clearToWhite").is(":checked")
 	};
 	$.ajax({
 		method: "POST",

@@ -2,18 +2,20 @@
 
 var FD = require("./flipdot");
 var express = require("express");
+var morgan = require('morgan')
 var bodyParser = require("body-parser");
 
 var fdm = new FD.FlipdotManager(4, 4, 0);
 
 var app = express();
 
+app.use(morgan("dev"));
 app.use(bodyParser.json());
 app.use(express.static(__dirname + "/static"));
 
 app.post("/text", function(req, res) {
     if (req.body.text) {
-        var row = req.body.row ? req.body.row - 1 || 0;
+        var row = req.body.row ? req.body.row - 1 : 0;
         fdm.drawNativeText(req.body.text, row);
         fdm.renderDots();
         res.sendStatus(200);
