@@ -1,9 +1,9 @@
 "use strict";
 
 var Canvas = require("canvas");
-var InstructionEngine = require("./instructionEngine");
+var InstructionEngine = require("./flipdot/instructionEngine");
 var TextRenderer = require("./textrenderer");
-var FlipdotController = require("./flipdotController");
+var FlipdotController = require("./flipdot/flipdotController");
 
 function blackOrWhitify(imageData, pixelOffset) {
 	var luminance = imageData[pixelOffset] * 0.21 + imageData[pixelOffset + 1] * 0.72 + imageData[pixelOffset + 2] * 0.07;
@@ -16,6 +16,7 @@ function blackOrWhitify2(imageData, pixelOffset) {
 }
 
 function FlipdotManager(numRows, numCols, startAddress) {
+	this.test = false;
 	numRows *= 2;
 	this.width = numCols * FlipdotController.DOTS_X;
 	this.height = numRows * FlipdotController.DOTS_Y;
@@ -26,6 +27,7 @@ function FlipdotManager(numRows, numCols, startAddress) {
 			this.controllers[i][j] = new FlipdotController(startAddress + j + i * numRows);
 		}
 	}
+	this.allController = new FlipdotController(0xFF);
 	this.canvas = new Canvas(this.width, this.height);
 	var ctx = this.canvas.getContext("2d");
 	ctx.antialias = "none";
@@ -115,7 +117,38 @@ FlipdotManager.prototype.buildInstruction = function() {
 };
 
 FlipdotManager.prototype.renderDots = function() {
+	if (this.test) {
+		InstructionEngine.clear();
+		this.test = false;
+	}
 	InstructionEngine.push(this.buildInstruction());
 };
+
+FlipdotManager.prototype.makeFlipInstruction = function(speed) {
+	let theAllController = this.allController;
+	return {
+		speed: speed,
+		done: false,
+		white: false,
+		nextInstruction: function() {
+			theAllController.clear(this.white);
+			this.white = !this.white;
+			var i = [];
+			theAllController.writeDots(i);
+			return i;
+		}
+	}
+};
+
+FlipdotManager.prototype.fastFlip = function(speed) {
+	if (this.test) {
+		InstructionEngine.clear();
+	} else {
+		this.test = true;
+	}
+
+	InstructionEngine.push(this.makeFlipInstruction(speed));
+};
+
 
 module.exports.FlipdotManager = FlipdotManager;

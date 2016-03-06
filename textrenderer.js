@@ -5,8 +5,9 @@
  */
 
 var charWidth = module.exports.charWidth = 5;
-var charHeight = module.exports.charHeight = 7; 
+var charHeight = module.exports.charHeight = 7;
 var blank = new Array(charWidth).fill(0);
+var whiteblank = new Array(charWidth).fill(0b0111110);
 
 function createBitmap(pixelArray) {
 	var hasFirstRow = pixelArray.length === charHeight;

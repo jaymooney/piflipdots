@@ -2,7 +2,7 @@
 
 var FD = require("./flipdot");
 var express = require("express");
-var morgan = require('morgan')
+var morgan = require("morgan")
 var bodyParser = require("body-parser");
 
 var fdm = new FD.FlipdotManager(4, 4, 0);
@@ -30,8 +30,9 @@ app.post("/clear", function(req, res) {
     res.sendStatus(200);
 });
 
-app.post("/testMode", function(req, res) {
-	// blow away current queue and fire up the test mode
+app.post("/flip", function(req, res) {
+    var s = req.body.speed || 200;
+    fdm.fastFlip(s);
     res.sendStatus(200);
 });
 

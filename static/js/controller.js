@@ -38,3 +38,30 @@ $("#clearButton").on("click", function(e) {
 function onError(response) {
 	console.log("boo fail");
 }
+
+$("#flipSpeed").on("input", function(e) {
+	$("#currentSpeed").text(this.value);
+});
+
+$("#flipButton").on("click", function(e) {
+	var data = {
+		speed: parseInt($("#flipSpeed").val())
+	};
+
+	$.ajax({
+		method: "POST",
+		url: "/flip",
+    	data: JSON.stringify(data),
+    	contentType: "application/json",
+        success: function (response) {
+            console.log("yay success");
+        },
+        error: onError
+	});
+});
+
+$("#fullText").on("input", function(e) {
+
+// enforce max line length and max lines
+});
+
