@@ -26,5 +26,5 @@ function drawText() {
 	fdm.drawCanvasText("CHOCOLATE", 0, 28);
 	fdm.copyFromCanvas();
 	fdm.renderDots();
-	process.exit();
+	setTimeout(process.exit, 1000);
 }

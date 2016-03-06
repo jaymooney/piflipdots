@@ -13,5 +13,8 @@ serialPort.on("open", function () {
   
   fdm.clearAll(process.argv[2] === "white");
   var instr = fdm.buildInstruction();
-  serialPort.write(instr, function(err) { serialPort.close()});
+  serialPort.write(instr, function(err) {
+    serialPort.close();
+    process.exit();
+  });
 });
