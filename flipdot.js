@@ -30,7 +30,7 @@ function FlipdotManager(numRows, numCols, startAddress) {
 	numRows *= 2;
 	this.width = numCols * FlipdotController.DOTS_X;
 	this.height = numRows * FlipdotController.DOTS_Y;
-	this.textCols = Math.floor(fdm.width / 6);
+	this.textCols = Math.floor(this.width / 6);
 	this.textRows = numRows;
 	this.controllers = [];
 	for (var i = 0; i < numCols; i++) {
@@ -137,7 +137,7 @@ FlipdotManager.prototype.renderDots = function() {
 };
 
 FlipdotManager.prototype.makeTrainTextInstruction = function(text, row) {
-	let transition = Transitions.makeTrainSignTransition("dum dee dum", text, row);
+	let transition = Transitions.makeTrainSignTransition("dum dee dum", text, row, this);
 
 	InstructionEngine.push(transition);
 };

@@ -31,7 +31,7 @@ module.exports.makeTrainSignTransition = function(start, end, row, fdm) {
 		done: false,
 		gen: trainGenerator(start, end),
 		nextInstruction: function() {
-			let next = gen.next();
+			let next = this.gen.next();
 			if (next.done) {
 				this.done = true;
 				return;
