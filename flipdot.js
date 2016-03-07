@@ -2,8 +2,9 @@
 
 var Canvas = require("canvas");
 var InstructionEngine = require("./flipdot/instructionEngine");
-var TextRenderer = require("./textrenderer");
+var TextRenderer = require("./flipdot/textrenderer");
 var FlipdotController = require("./flipdot/flipdotController");
+var Transitions = require("./flipdot/transitions");
 
 function blackOrWhitify(imageData, pixelOffset) {
 	var luminance = imageData[pixelOffset] * 0.21 + imageData[pixelOffset + 1] * 0.72 + imageData[pixelOffset + 2] * 0.07;
@@ -15,11 +16,22 @@ function blackOrWhitify2(imageData, pixelOffset) {
 	return luminance > 127;
 }
 
+function textPand(str, fullLength) {
+	str = str.toUpperCase();
+	let toAdd = fullLength - str.length;
+	if (toAdd === 0) {
+		return str;
+	}
+	return str + Array(toAdd).fill(" ").join("");
+}
+
 function FlipdotManager(numRows, numCols, startAddress) {
 	this.test = false;
 	numRows *= 2;
 	this.width = numCols * FlipdotController.DOTS_X;
 	this.height = numRows * FlipdotController.DOTS_Y;
+	this.textCols = Math.floor(fdm.width / 6);
+	this.textRows = numRows;
 	this.controllers = [];
 	for (var i = 0; i < numCols; i++) {
 		this.controllers[i] = [];
@@ -124,20 +136,10 @@ FlipdotManager.prototype.renderDots = function() {
 	InstructionEngine.push(this.buildInstruction());
 };
 
-FlipdotManager.prototype.makeFlipInstruction = function(speed) {
-	let theAllController = this.allController;
-	return {
-		speed: speed,
-		done: false,
-		white: false,
-		nextInstruction: function() {
-			theAllController.clear(this.white);
-			this.white = !this.white;
-			var i = [];
-			theAllController.writeDots(i);
-			return i;
-		}
-	}
+FlipdotManager.prototype.makeTrainTextInstruction = function(text, row) {
+	let transition = Transitions.makeTrainSignTransition("dum dee dum", text, row);
+
+	InstructionEngine.push(transition);
 };
 
 FlipdotManager.prototype.fastFlip = function(speed) {
@@ -147,7 +149,7 @@ FlipdotManager.prototype.fastFlip = function(speed) {
 		this.test = true;
 	}
 
-	InstructionEngine.push(this.makeFlipInstruction(speed));
+	InstructionEngine.push(Transitions.makeFlipInstruction(speed, this));
 };
 
 

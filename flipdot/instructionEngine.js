@@ -30,7 +30,10 @@ function drawNext() {
 			if (i.speed) {
 				delay = i.speed;
 			}
-			serial.write(i.nextInstruction());
+			let next = i.nextInstruction();
+			if (next) {
+				serial.write(next);
+			}
 			if (i.done) {
 				queue.shift();
 			}

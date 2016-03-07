@@ -16,8 +16,9 @@ app.use(express.static(__dirname + "/static"));
 app.post("/text", function(req, res) {
     if (req.body.text) {
         var row = req.body.row ? req.body.row - 1 : 0;
-        fdm.drawNativeText(req.body.text, row);
-        fdm.renderDots();
+        fdm.makeTrainTextInstruction(req.body.text, row);
+        // fdm.drawNativeText(req.body.text, row);
+        // fdm.renderDots();
         res.sendStatus(200);
     } else {
         res.sendStatus(400);
