@@ -60,6 +60,35 @@ $("#flipButton").on("click", function(e) {
 	});
 });
 
+
+
+$("#flashButton").on("click", function(e) {
+	$.ajax({
+		method: "POST",
+		url: "/flash",
+    	// data: JSON.stringify(data),
+    	contentType: "application/json",
+        success: function (response) {
+            console.log("yay success");
+        },
+        error: onError
+	});
+});
+
+$("#stageLeftButton").on("click", function(e) {
+	$.ajax({
+		method: "POST",
+		url: "/stageleft",
+    	// data: JSON.stringify(data),
+    	contentType: "application/json",
+        success: function (response) {
+            console.log("yay success");
+        },
+        error: onError
+	});
+});
+
+
 $("#fullText").on("input", function(e) {
 
 // enforce max line length and max lines

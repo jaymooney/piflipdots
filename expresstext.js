@@ -37,6 +37,16 @@ app.post("/flip", function(req, res) {
     res.sendStatus(200);
 });
 
+app.post("/flash", function(req, res) {
+    fdm.flashAll(); // speed, # of times
+    res.sendStatus(200);
+});
+
+app.post("/stageleft", function(req, res) {
+
+    res.sendStatus(200);
+});
+
 app.post("/addOrder", function(req, res) {
 
     res.sendStatus(200);
