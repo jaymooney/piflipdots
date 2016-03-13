@@ -14,7 +14,7 @@ FlipdotController.DOTS_Y = DOTS_Y;
 FlipdotController.DOTS_X = DOTS_X;
 
 FlipdotController.prototype.cloneDots = function() {
-	return this.dots.slice(0);
+	return this.dots.slice();
 };
 
 FlipdotController.prototype.clear = function(toWhite) {

@@ -64,7 +64,7 @@ function* flashGenerator(numFlashes, fdm) {
 	for (var i = 0; i < numFlashes; i++) {
 		fdm.clearAll();
 		yield fdm.buildInstruction();
-		fdm.controllers.forEach((column, c) => column.forEach((controller, r) => controller.setDots(original[c][r])))
+		fdm.controllers.forEach((column, c) => column.forEach((controller, r) => controller.setDots(original[c][r].slice())));
 		yield fdm.buildInstruction();
 	}
 }

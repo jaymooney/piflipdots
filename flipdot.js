@@ -159,10 +159,10 @@ FlipdotManager.prototype.fastFlip = function(speed) {
 	InstructionEngine.push(Transitions.makeFlipInstruction(speed, this));
 };
 
-FlipdotManager.prototype.flashAll = function() {
+FlipdotManager.prototype.flashAll = function(speed, numFlashes) {
 	this.exitTestContext();
 
-	let transition = Transitions.makeFlashTransition(this);
+	let transition = Transitions.makeFlashInstruction(500, numFlashes, this);
 	InstructionEngine.push(transition);
 }
 

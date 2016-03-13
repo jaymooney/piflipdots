@@ -38,7 +38,9 @@ app.post("/flip", function(req, res) {
 });
 
 app.post("/flash", function(req, res) {
-    fdm.flashAll(); // speed, # of times
+    var s = req.body.speed || 500;
+    var i = req.body.numFlashes || 5;
+    fdm.flashAll(s, i);
     res.sendStatus(200);
 });
 
@@ -62,8 +64,11 @@ app.post("/clearOrders", function(req, res) {
     res.sendStatus(200);
 });
 
-app.post("/nighttime", function(req, res) {
-	// put up something to display overnight
+app.post("/drawPrettyDandelion", function(req, res) {
+    fdm.drawCanvasText("DANDELION", 0, 0);
+    fdm.drawCanvasText("CHOCOLATE", 0, 28);
+    fdm.copyFromCanvas();
+    fdm.renderDots();
     res.sendStatus(200);
 });
 
