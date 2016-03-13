@@ -26,9 +26,7 @@ $("#clearButton").on("click", function(e) {
 		url: "/clear",
     	data: JSON.stringify(data),
     	contentType: "application/json",
-        success: function (response) {
-            console.log("yay success");
-        },
+        success: onSuccess,
         error: onError
 	});
 });
@@ -37,6 +35,9 @@ $("#clearButton").on("click", function(e) {
 
 function onError(response) {
 	console.log("boo fail");
+}
+function onSuccess(response) {
+    console.log("yay success");
 }
 
 $("#flipSpeed").on("input", function(e) {
@@ -53,9 +54,7 @@ $("#flipButton").on("click", function(e) {
 		url: "/flip",
     	data: JSON.stringify(data),
     	contentType: "application/json",
-        success: function (response) {
-            console.log("yay success");
-        },
+        success: onSuccess,
         error: onError
 	});
 });
@@ -68,9 +67,7 @@ $("#flashButton").on("click", function(e) {
 		url: "/flash",
     	// data: JSON.stringify(data),
     	contentType: "application/json",
-        success: function (response) {
-            console.log("yay success");
-        },
+        success: onSuccess,
         error: onError
 	});
 });
@@ -81,13 +78,20 @@ $("#stageLeftButton").on("click", function(e) {
 		url: "/stageleft",
     	// data: JSON.stringify(data),
     	contentType: "application/json",
-        success: function (response) {
-            console.log("yay success");
-        },
+        success: onSuccess,
         error: onError
 	});
 });
 
+$("#logoButton").on("click", function(e) {
+	$.ajax({
+		method: "POST",
+		url: "/drawLogo",
+    	contentType: "application/json",
+        success: onSuccess,
+        error: onError
+	});
+});
 
 $("#fullText").on("input", function(e) {
 

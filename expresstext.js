@@ -17,8 +17,6 @@ app.post("/text", function(req, res) {
     if (req.body.text) {
         var row = req.body.row ? req.body.row - 1 : 0;
         fdm.makeTrainTextInstruction(req.body.text, row);
-        // fdm.drawNativeText(req.body.text, row);
-        // fdm.renderDots();
         res.sendStatus(200);
     } else {
         res.sendStatus(400);
@@ -64,9 +62,9 @@ app.post("/clearOrders", function(req, res) {
     res.sendStatus(200);
 });
 
-app.post("/drawPrettyDandelion", function(req, res) {
-    fdm.drawCanvasText("DANDELION", 0, 0);
-    fdm.drawCanvasText("CHOCOLATE", 0, 28);
+app.post("/drawLogo", function(req, res) {
+    // need to make this an instruction
+    fdm.canvas.drawDandelion();
     fdm.copyFromCanvas();
     fdm.renderDots();
     res.sendStatus(200);

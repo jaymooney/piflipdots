@@ -1,20 +1,10 @@
 "use strict";
 
-var Canvas = require("canvas");
 var InstructionEngine = require("./flipdot/instructionEngine");
 var TextRenderer = require("./flipdot/textrenderer");
 var FlipdotController = require("./flipdot/flipdotController");
 var Transitions = require("./flipdot/transitions");
-
-function blackOrWhitify(imageData, pixelOffset) {
-	var luminance = imageData[pixelOffset] * 0.21 + imageData[pixelOffset + 1] * 0.72 + imageData[pixelOffset + 2] * 0.07;
-	return luminance > 188;
-}
-
-function blackOrWhitify2(imageData, pixelOffset) {
-	var luminance = (imageData[pixelOffset] + imageData[pixelOffset + 1] + imageData[pixelOffset + 2]) / 3;
-	return luminance > 127;
-}
+var Canvas = require("./flipdot/canvasRenderer");
 
 function textPand(str, fullLength) {
 	str = str.toUpperCase();
@@ -41,12 +31,6 @@ function FlipdotManager(numRows, numCols, startAddress) {
 	}
 	this.allController = new FlipdotController(0xFF);
 	this.canvas = new Canvas(this.width, this.height);
-	var ctx = this.canvas.getContext("2d");
-	ctx.antialias = "none";
-	ctx.imageSmoothingEnabled = false;
-	ctx.fillStyle = "#000";
-	ctx.fillRect(0, 0, this.width, this.height);
-	this.ctx = ctx;
 }
 
 FlipdotManager.prototype.drawNativeText = function(text, row) {
@@ -61,35 +45,8 @@ FlipdotManager.prototype.drawNativeText = function(text, row) {
 	};
 };
 
-FlipdotManager.prototype.drawCanvasText = function(text, x, y) {
-	var ctx = this.ctx;
-	ctx.fillStyle = "#fff";
-	ctx.font = "18px OPTICaslonBold-Cond";
-	ctx.textAlign = "left";
-	ctx.textBaseline = "hanging";
-	ctx.fillText(text, x, y);
-};
-
-FlipdotManager.prototype.drawCanvasImage = function(imageData, sizeToFit) {
-	var img = new Canvas.Image;
-	img.src = imageData;
-	if (sizeToFit) {
-		this.ctx.drawImage(img, 0, 0, this.width, this.height);
-	} else {
-		this.ctx.drawImage(img, 0, 0);
-	}
-};
-
 FlipdotManager.prototype.copyFromCanvas = function() {
-	var imageData = this.ctx.getImageData(0, 0, this.width, this.height);
-	var pixel = 0;
-	for (var y = 0; y < imageData.height; y++) {
-		for (var x = 0; x < imageData.width; x++) {
-			var val = blackOrWhitify(imageData.data, pixel)
-			this.setPixel(val, x, y);
-			pixel += 4;
-		}
-	}
+	this.canvas.copyToFlipdots(this);
 };
 
 FlipdotManager.prototype.getControllerByPixel = function(x, y) {
