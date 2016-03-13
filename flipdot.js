@@ -92,7 +92,6 @@ FlipdotManager.prototype.copyFromCanvas = function() {
 	}
 };
 
-
 FlipdotManager.prototype.getControllerByPixel = function(x, y) {
 	// memoize this...
 	var col = Math.floor(x / FlipdotController.DOTS_X);
@@ -128,29 +127,43 @@ FlipdotManager.prototype.buildInstruction = function() {
 	return instruction;
 };
 
-FlipdotManager.prototype.renderDots = function() {
-	if (this.test) {
-		InstructionEngine.clear();
-		this.test = false;
-	}
-	InstructionEngine.push(this.buildInstruction());
-};
-
-FlipdotManager.prototype.makeTrainTextInstruction = function(text, row) {
-	let transition = Transitions.makeTrainSignTransition("dum dee dum", text, row, this);
-
-	InstructionEngine.push(transition);
-};
-
-FlipdotManager.prototype.fastFlip = function(speed) {
+FlipdotManager.prototype.enterTestContext = function() {
 	if (this.test) {
 		InstructionEngine.clear();
 	} else {
 		this.test = true;
 	}
+};
 
+FlipdotManager.prototype.exitTestContext = function() {
+	if (this.test) {
+		InstructionEngine.clear();
+		this.test = false;
+	}
+};
+
+FlipdotManager.prototype.renderDots = function() {
+	this.exitTestContext();
+	InstructionEngine.push(this.buildInstruction());
+};
+
+FlipdotManager.prototype.makeTrainTextInstruction = function(text, row) {
+	this.exitTestContext();
+	let transition = Transitions.makeTrainSignTransition(textPand(" test test test", this.textCols), textPand(text, this.textCols), row, this);
+
+	InstructionEngine.push(transition);
+};
+
+FlipdotManager.prototype.fastFlip = function(speed) {
+	this.enterTestContext();
 	InstructionEngine.push(Transitions.makeFlipInstruction(speed, this));
 };
 
+FlipdotManager.prototype.flashAll = function() {
+	this.exitTestContext();
+
+	let transition = Transitions.makeFlashTransition(this);
+	InstructionEngine.push(transition);
+}
 
 module.exports.FlipdotManager = FlipdotManager;

@@ -13,6 +13,10 @@ var FlipdotController = module.exports = exports = function FlipdotController(ad
 FlipdotController.DOTS_Y = DOTS_Y;
 FlipdotController.DOTS_X = DOTS_X;
 
+FlipdotController.prototype.cloneDots = function() {
+	return this.dots.slice(0);
+};
+
 FlipdotController.prototype.clear = function(toWhite) {
 	var val = toWhite ? ALL_ON : 0;
 	this.dots.fill(val);

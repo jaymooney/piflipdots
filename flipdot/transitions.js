@@ -59,3 +59,26 @@ module.exports.makeFlipInstruction = function(speed, fdm) {
 	}
 };
 
+function* flashGenerator(numFlashes, fdm) {
+	let original = fdm.controllers.map(col => col.map(controller => controller.cloneDots()));
+	for (var i = 0; i < numFlashes; i++) {
+		fdm.clearAll();
+		yield fdm.buildInstruction();
+		fdm.controllers.forEach((column, c) => column.forEach((controller, r) => controller.setDots(original[c][r])))
+		yield fdm.buildInstruction();
+	}
+}
+
+module.exports.makeFlashInstruction = function(speed, numFlashes, fdm) {
+	return {
+		speed: speed,
+		done: false,
+		gen: flashGenerator(numFlashes, fdm),
+		nextInstruction: function() {
+			let next = this.gen.next();
+			this.done = next.done;
+			return next.value;
+		}
+	}
+};
+
