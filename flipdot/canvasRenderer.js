@@ -1,6 +1,7 @@
 "use strict";
 
 var Canvas = require("canvas");
+var fs = require("fs");
 
 function blackOrWhitify(imageData, pixelOffset) {
 	var luminance = imageData[pixelOffset] * 0.21 + imageData[pixelOffset + 1] * 0.72 + imageData[pixelOffset + 2] * 0.07;
@@ -38,14 +39,21 @@ CanvasRenderer.prototype.drawGothicText = function(text, x, y) {
 	this.drawText(text, CanvasRenderer.HIGHWAY_GOTHIC, x, y);
 };
 
-CanvasRenderer.prototype.drawImage = function(imageData, sizeToFit) {
-	var img = new Canvas.Image;
-	img.src = imageData;
-	if (sizeToFit) {
-		this.ctx.drawImage(img, 0, 0, this.width, this.height);
-	} else {
-		this.ctx.drawImage(img, 0, 0);
-	}
+CanvasRenderer.prototype.drawImage = function(file, sizeToFit, cb) {
+	fs.readFile(file, function(err, imageData) {
+		if (err) {
+			console.error(err);
+			return cb(err);
+		}
+		var img = new Canvas.Image;
+		img.src = imageData;
+		if (sizeToFit) {
+			this.ctx.drawImage(img, 0, 0, this.width, this.height);
+		} else {
+			this.ctx.drawImage(img, 0, 0);
+		}
+		cb();
+	});
 };
 
 CanvasRenderer.prototype.copyToFlipdots = function(fdm) {
