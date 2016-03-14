@@ -109,19 +109,52 @@ $("#fullText").on("input", function(e) {
 	this.setSelectionRange(ss, se);
 });
 
-$("#writeFullText").on("click", function(e) {
-	var data = {
-		noanimate: $("#fullTextAnimate").is(":checked"),
-		text: truncateTextForSign($("#fullText").val())
-	};
-	
+function writeTextToSign(text, animation) {
 	$.ajax({
 		method: "POST",
 		url: "/fulltext",
-		data: JSON.stringify(data),
+		data: JSON.stringify({text:text,animation:animation}),
     	contentType: "application/json",
         success: onSuccess,
         error: onError
 	});
+}
+
+$("#writeFullText").on("click", function(e) {
+	writeTextToSign(truncateTextForSign($("#fullText").val()), "allflip");
 });
 
+var orderPreamble = ["  Orders ready:", " "];
+var orders = [];
+
+function makeOrderText() {
+	return orderPreamble.concat(orders);
+}
+
+$("#addOrder").on("click", function(e) {
+	var name = $("#nameToAdd").val();
+	if (name.length) {
+		orders.push(name);
+		writeTextToSign(makeOrderText(), "lineflip");
+		$("#orderTable").append("<tr><td>" + name +
+			"</td><td><span class=\"clearOrder glyphicon glyphicon-trash\"></span></td></tr>");
+		$("#nameToAdd").val("");
+	}
+	// error
+});
+
+$(document).delegate("span.clearOrder", "click", function(e) {
+	var rowToDelete = $(this).closest("tr");
+	var index = rowToDelete.index();
+	rowToDelete.fadeOut(600, function() {
+		rowToDelete.remove();
+	});
+	orders.splice(index, 1);
+	writeTextToSign(makeOrderText(), "lineflip");
+});
+
+$("#clearAllOrders").on("click", function(e) {
+	$("#orderTable > tbody").empty();
+	orders = [];
+	writeTextToSign(makeOrderText(), "lineflip");
+});
