@@ -1,4 +1,18 @@
 "use strict"
+module.exports.makeSimpleTextInstruction = function(textArray, fdm) {
+	return {
+		speed: 100,
+		done: false,
+		nextInstruction: function() {
+			textArray.forEach((s, i) => {
+				fdm.drawNativeText(s, i);
+				fdm.text[i] = s;
+			});
+			this.done = true;
+			return fdm.buildInstruction();
+		}
+	};
+};
 
 function* trainGenerator(start, end) {
 	var current = start;

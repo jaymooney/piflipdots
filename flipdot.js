@@ -117,8 +117,7 @@ FlipdotManager.prototype.makeTrainTextInstructionForRow = function(text, row) {
 	InstructionEngine.push(transition);
 };
 
-FlipdotManager.prototype.makeTrainTextInstruction = function(text) {
-	this.exitTestContext();
+FlipdotManager.prototype.breakupText = function(text) {
 	var textArray = text.split("\n");
 	let len = textArray.length;
     if (len > this.textRows) {
@@ -127,7 +126,7 @@ FlipdotManager.prototype.makeTrainTextInstruction = function(text) {
 		textArray.length = this.textRows;
 		textArray.fill(this.blankRow, len);
 	}
-    textArray = textArray.map(l => {
+    return textArray.map(l => {
     	if (l.length < this.textCols) {
 	    	return textPand(l, this.textCols);
 	    }
@@ -136,10 +135,25 @@ FlipdotManager.prototype.makeTrainTextInstruction = function(text) {
 	    }
 	    return l.toUpperCase();
     });
-	let transition = Transitions.makeTrainSignTransition(textArray, this);
-
-	InstructionEngine.push(transition);
 };
+
+FlipdotManager.prototype.makeTextInstruction = function(text, animation) {
+	this.exitTestContext();
+	var textArray = this.breakupText(text);
+	if (animation === "allflip") {
+		let transition = Transitions.makeTrainSignTransition(textArray, this);
+		InstructionEngine.push(transition);
+	} else if (animation === "lineflip") {
+		textArray.forEach((s, i) => {
+			let transition = Transitions.makeTrainSignTransitionForRow(s, i, this);
+			InstructionEngine.push(transition);
+		});
+	} else {
+		let transition = Transitions.makeSimpleTextInstruction(textArray, this);
+		InstructionEngine.push(transition);
+	}
+};
+
 
 FlipdotManager.prototype.fastFlip = function(speed) {
 	this.enterTestContext();

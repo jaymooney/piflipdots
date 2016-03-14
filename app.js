@@ -25,7 +25,8 @@ app.post("/text", function(req, res) {
 
 app.post("/fulltext", function(req, res) {
     if (req.body.text) {
-        fdm.makeTrainTextInstruction(req.body.text);
+        let anim = req.body.animation || "simple";
+        fdm.makeTextInstruction(req.body.text, anim);
         res.sendStatus(200);
     } else {
         res.sendStatus(400);
@@ -50,21 +51,6 @@ app.post("/flash", function(req, res) {
     var s = req.body.speed || 500;
     var i = req.body.numFlashes || 5;
     fdm.flashAll(s, i);
-    res.sendStatus(200);
-});
-
-app.post("/addOrder", function(req, res) {
-
-    res.sendStatus(200);
-});
-
-app.post("/clearOrder", function(req, res) {
-
-    res.sendStatus(200);
-});
-
-app.post("/clearOrders", function(req, res) {
-
     res.sendStatus(200);
 });
 
