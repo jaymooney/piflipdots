@@ -22,6 +22,7 @@ function FlipdotManager(numRows, numCols, startAddress) {
 	this.height = numRows * FlipdotController.DOTS_Y;
 	this.textCols = Math.floor(this.width / 6);
 	this.textRows = numRows;
+	this.blankRow = textPand("", this.textCols);
 	this.clearText();
 	this.controllers = [];
 	for (var i = 0; i < numCols; i++) {
@@ -35,7 +36,7 @@ function FlipdotManager(numRows, numCols, startAddress) {
 }
 
 FlipdotManager.prototype.clearText = function() {
-	this.text = Array(this.textRows).fill(textPand("", this.textCols));
+	this.text = Array(this.textRows).fill(this.blankRow);
 }
 
 FlipdotManager.prototype.drawNativeText = function(text, row) {
@@ -118,10 +119,14 @@ FlipdotManager.prototype.makeTrainTextInstructionForRow = function(text, row) {
 
 FlipdotManager.prototype.makeTrainTextInstruction = function(text) {
 	this.exitTestContext();
-    var textArray = text.split("\n");
-    if (textArray.length > this.textRows) {
+	var textArray = text.split("\n");
+	let len = textArray.length;
+    if (len > this.textRows) {
         textArray.length = this.textRows;
-    }
+    } else if (len < this.textRows) {
+		textArray.length = this.textRows;
+		textArray.fill(this.blankRow, len);
+	}
     textArray = textArray.map(l => {
     	if (l.length < this.textCols) {
 	    	return textPand(l, this.textCols);

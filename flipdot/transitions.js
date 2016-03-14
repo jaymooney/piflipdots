@@ -32,12 +32,12 @@ module.exports.makeTrainSignTransitionForRow = function(text, row, fdm) {
 		gen: null,
 		nextInstruction: function() {
 			if (!this.gen) {
-				let start = fdm.textRows[row];
+				let start = fdm.text[row];
 				this.gen = trainGenerator(start, text);
 			}
 			let next = this.gen.next();
 			if (next.done) {
-				fdm.textRows[row] = text;
+				fdm.text[row] = text;
 				this.done = true;
 				return;
 			} else {
@@ -56,7 +56,7 @@ module.exports.makeTrainSignTransition = function(textArray, fdm) {
 		numFinished: 0,
 		nextInstruction: function() {
 			if (!this.gens) {
-				this.gens = textArray.map((s, i) => trainGenerator(fdm.textRows[i], s));
+				this.gens = textArray.map((s, i) => trainGenerator(fdm.text[i], s));
 			} else if (this.numFinished === this.gens.length) {
 				this.done = true;
 				return;
@@ -65,7 +65,7 @@ module.exports.makeTrainSignTransition = function(textArray, fdm) {
 					if (!gen.finished) {
 						let next = gen.next();
 						if (next.done) {
-							fdm.textRows[row] = text;
+							fdm.text[row] = textArray[row];
 							gen.finished = true;
 							this.numFinished++;
 						} else {

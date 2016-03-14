@@ -112,7 +112,7 @@ $("#fullText").on("input", function(e) {
 $("#writeFullText").on("click", function(e) {
 	var data = {
 		noanimate: $("#fullTextAnimate").is(":checked"),
-		text: truncateTextForSign(this.value)
+		text: truncateTextForSign($("#fullText").val())
 	};
 	
 	$.ajax({
