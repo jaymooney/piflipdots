@@ -24,7 +24,8 @@ app.post("/text", function(req, res) {
 });
 
 app.post("/fulltext", function(req, res) {
-    if (req.body.text) {
+    let text = req.body.text;
+    if (typeof text === "string") {
         let anim = req.body.animation || "simple";
         fdm.makeTextInstruction(req.body.text, anim);
         res.sendStatus(200);

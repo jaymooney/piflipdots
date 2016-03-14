@@ -124,11 +124,15 @@ $("#writeFullText").on("click", function(e) {
 	writeTextToSign(truncateTextForSign($("#fullText").val()), "allflip");
 });
 
-var orderPreamble = ["  Orders ready:", " "];
+var orderPreamble = ["   Orders ready:", " "];
 var orders = [];
 
 function makeOrderText() {
-	return orderPreamble.concat(orders);
+	var textOrders = orders.map(function(o, i) {
+		var num = i + 1;
+		return "  " + num + ") " + o;
+	});
+	return orderPreamble.concat(textOrders).join("\n");
 }
 
 $("#addOrder").on("click", function(e) {
