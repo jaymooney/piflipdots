@@ -93,8 +93,35 @@ $("#logoButton").on("click", function(e) {
 	});
 });
 
-$("#fullText").on("input", function(e) {
+function truncateTextForSign(text) {
+	var lines = text.split("\n"); 
+	if (lines.length > 8) {
+		lines.length = 8;
+	}
+	var truncated = lines.map(l => l.length > 18 ? l.substring(0, 18) : l);
+	return truncated.join("\n");
+}
 
-// enforce max line length and max lines
+$("#fullText").on("input", function(e) {
+	var ss = this.selectionStart;
+	var se = this.selectionEnd;
+	this.value = truncateTextForSign(this.value);
+	this.setSelectionRange(ss, se);
+});
+
+$("#writeFullText").on("click", function(e) {
+	var data = {
+		noanimate: $("#fullTextAnimate").is(":checked"),
+		text: truncateTextForSign(this.value)
+	};
+	
+	$.ajax({
+		method: "POST",
+		url: "/fulltext",
+		data: JSON.stringify(data),
+    	contentType: "application/json",
+        success: onSuccess,
+        error: onError
+	});
 });
 

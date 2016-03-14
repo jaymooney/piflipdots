@@ -16,15 +16,26 @@ app.use(express.static(__dirname + "/static"));
 app.post("/text", function(req, res) {
     if (req.body.text) {
         var row = req.body.row ? req.body.row - 1 : 0;
-        fdm.makeTrainTextInstruction(req.body.text, row);
+        fdm.makeTrainTextInstructionForRow(req.body.text, row);
         res.sendStatus(200);
     } else {
         res.sendStatus(400);
     }
 });
 
+app.post("/fulltext", function(req, res) {
+    if (req.body.text) {
+        fdm.makeTrainTextInstruction(req.body.text);
+        res.sendStatus(200);
+    } else {
+        res.sendStatus(400);
+    }
+});
+
+
 app.post("/clear", function(req, res) {
     fdm.clearAll(req.body.toWhite);
+    fdm.clearText();
     fdm.renderDots();
     res.sendStatus(200);
 });
@@ -39,11 +50,6 @@ app.post("/flash", function(req, res) {
     var s = req.body.speed || 500;
     var i = req.body.numFlashes || 5;
     fdm.flashAll(s, i);
-    res.sendStatus(200);
-});
-
-app.post("/stageleft", function(req, res) {
-
     res.sendStatus(200);
 });
 

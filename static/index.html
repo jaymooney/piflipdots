@@ -12,11 +12,17 @@
   <h1>Dandelion Flipdot Sign Controller</h1>
 </div>
 
-<div class="form-group">
-    <label class="control-label" for="fullText">Write on the sign</label>
-	<textarea style="font-family: monospace;" class="form-control" id="fullText" rows="8" cols="15"></textarea>
-	animate from current value?
-	type of animation?
+<div class="form-group row">
+	<div class="col-sm-6 col-md-6">
+	    <label class="control-label" for="fullText">Write on the sign</label>
+		<textarea style="font-family: monospace;" class="form-control" id="fullText" rows="8" placeholder="8 rows of 18 characters each"></textarea>
+		  <div class="checkbox">
+		    <label>
+		      <input type="checkbox" id="fullTextAnimate"> Skip Animation
+		    </label>
+		  </div>
+		<button type="button" class="btn btn-success" id="writeFullText">Write Text</button>
+	</div>
 </div>
 
 <div class="form-horizontal">
@@ -53,7 +59,7 @@
 <div class="col-md-6 col-xs-8">
 <div class="panel panel-danger">
 	<div class="panel-heading">
-		<h3 class="panel-title">Other stuff</h3>
+		<h3 class="panel-title">Clear the sign</h3>
 	</div>
 	<div class="panel-body text-center">
 		<div class="row">

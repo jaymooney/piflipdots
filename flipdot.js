@@ -22,6 +22,7 @@ function FlipdotManager(numRows, numCols, startAddress) {
 	this.height = numRows * FlipdotController.DOTS_Y;
 	this.textCols = Math.floor(this.width / 6);
 	this.textRows = numRows;
+	this.clearText();
 	this.controllers = [];
 	for (var i = 0; i < numCols; i++) {
 		this.controllers[i] = [];
@@ -31,6 +32,10 @@ function FlipdotManager(numRows, numCols, startAddress) {
 	}
 	this.allController = new FlipdotController(0xFF);
 	this.canvas = new Canvas(this.width, this.height);
+}
+
+FlipdotManager.prototype.clearText = function() {
+	this.text = Array(this.textRows).fill(textPand("", this.textCols));
 }
 
 FlipdotManager.prototype.drawNativeText = function(text, row) {
@@ -104,9 +109,29 @@ FlipdotManager.prototype.renderDots = function() {
 	InstructionEngine.push(this.buildInstruction());
 };
 
-FlipdotManager.prototype.makeTrainTextInstruction = function(text, row) {
+FlipdotManager.prototype.makeTrainTextInstructionForRow = function(text, row) {
 	this.exitTestContext();
-	let transition = Transitions.makeTrainSignTransition(textPand(" test test test", this.textCols), textPand(text, this.textCols), row, this);
+	let transition = Transitions.makeTrainSignTransitionForRow(textPand(text, this.textCols), row, this);
+
+	InstructionEngine.push(transition);
+};
+
+FlipdotManager.prototype.makeTrainTextInstruction = function(text) {
+	this.exitTestContext();
+    var textArray = text.split("\n");
+    if (textArray.length > this.textRows) {
+        textArray.length = this.textRows;
+    }
+    textArray = textArray.map(l => {
+    	if (l.length < this.textCols) {
+	    	return textPand(l, this.textCols);
+	    }
+	    if (l.length > this.textCols) {
+	    	return l.substring(0, this.textCols);
+	    }
+	    return l;
+    });
+	let transition = Transitions.makeTrainSignTransition(textArray, this);
 
 	InstructionEngine.push(transition);
 };

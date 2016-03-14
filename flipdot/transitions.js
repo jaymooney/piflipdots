@@ -25,18 +25,54 @@ function* trainGenerator(start, end) {
 	}
 }
 
-module.exports.makeTrainSignTransition = function(start, end, row, fdm) {
+module.exports.makeTrainSignTransitionForRow = function(text, row, fdm) {
 	return {
 		speed: 100,
 		done: false,
-		gen: trainGenerator(start, end),
+		gen: null,
 		nextInstruction: function() {
+			if (!this.gen) {
+				let start = fdm.textRows[row];
+				this.gen = trainGenerator(start, text);
+			}
 			let next = this.gen.next();
 			if (next.done) {
+				fdm.textRows[row] = text;
 				this.done = true;
 				return;
 			} else {
 				fdm.drawNativeText(next.value, row);
+				return fdm.buildInstruction();
+			}
+		}
+	}
+};
+
+module.exports.makeTrainSignTransition = function(textArray, fdm) {
+	return {
+		speed: 100,
+		done: false,
+		gens: null,
+		numFinished: 0,
+		nextInstruction: function() {
+			if (!this.gens) {
+				this.gens = textArray.map((s, i) => trainGenerator(fdm.textRows[i], s));
+			} else if (this.numFinished === this.gens.length) {
+				this.done = true;
+				return;
+			} else {
+				this.gens.forEach((gen, row) => {
+					if (!gen.finished) {
+						let next = gen.next();
+						if (next.done) {
+							fdm.textRows[row] = text;
+							gen.finished = true;
+							this.numFinished++;
+						} else {
+							fdm.drawNativeText(next.value, row);
+						}
+					}
+				});
 				return fdm.buildInstruction();
 			}
 		}
