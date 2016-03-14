@@ -2,7 +2,7 @@
   "name": "flipdots",
   "version": "0.0.1",
   "description": "raspberry pi driver for a bunch of flipdot signs",
-  "main": "cycle.js",
+  "main": "app.js",
   "dependencies": {
     "body-parser": "^1.14.2",
     "canvas": "^1.3.5",
