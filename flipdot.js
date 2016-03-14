@@ -132,9 +132,9 @@ FlipdotManager.prototype.makeTrainTextInstruction = function(text) {
 	    	return textPand(l, this.textCols);
 	    }
 	    if (l.length > this.textCols) {
-	    	return l.substring(0, this.textCols);
+	    	return l.substring(0, this.textCols).toUpperCase();
 	    }
-	    return l;
+	    return l.toUpperCase();
     });
 	let transition = Transitions.makeTrainSignTransition(textArray, this);
 

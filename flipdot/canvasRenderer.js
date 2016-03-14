@@ -40,7 +40,7 @@ CanvasRenderer.prototype.drawGothicText = function(text, x, y) {
 };
 
 CanvasRenderer.prototype.drawImage = function(file, sizeToFit, cb) {
-	fs.readFile(file, function(err, imageData) {
+	fs.readFile(file, (err, imageData) => {
 		if (err) {
 			console.error(err);
 			return cb(err);
